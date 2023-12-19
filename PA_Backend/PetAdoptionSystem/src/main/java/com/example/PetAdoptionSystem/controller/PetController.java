@@ -24,7 +24,7 @@ public class PetController {
             petService.savePet(pet);
             return ResponseEntity.status(HttpStatus.CREATED).body("Pet saved successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving adopter");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving pet");
         }
     }
 }

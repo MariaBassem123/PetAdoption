@@ -11,5 +11,5 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
-    public void savePet(Pet pet){ petRepository.savePet(pet); }
+    public void savePet(Pet pet){petRepository.savePet(pet);}
 }

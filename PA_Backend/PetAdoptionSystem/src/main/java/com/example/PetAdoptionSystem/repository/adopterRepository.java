@@ -16,48 +16,31 @@ public class adopterRepository {
     private JdbcTemplate jdbcTemplate;
 
     public void saveAdopter(Adopter adopter) {
-        try {
-            String sql = "INSERT INTO adopters (name, email, password, phoneNumber) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, adopter.getName(), adopter.getEmail(), adopter.getPassword(), adopter.getPhoneNumber());
-        } catch (DataAccessException e) {
-            // Log the exception or handle it as needed
-            throw new RuntimeException("Error saving adopter", e);
-        }
+        String sql = "INSERT INTO adopters (name, email, password, phoneNumber) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, adopter.getName(), adopter.getEmail(), adopter.getPassword(), adopter.getPhoneNumber());
+
     }
 
     public List<Adopter> getAllAdopters() {
-        try {
-            String sql = "SELECT * FROM adopters";
-            return jdbcTemplate.query(sql, (resultSet, rowNum) ->
-                    new Adopter(resultSet.getInt("adopterId"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"),
-                            resultSet.getString("password"),
-                            resultSet.getString("phoneNumber")));
-        } catch (DataAccessException e) {
-            // Log the exception or handle it as needed
-            throw new RuntimeException("Error retrieving adopters", e);
-        }
+        String sql = "SELECT * FROM adopters";
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new Adopter(resultSet.getInt("adopterId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("phoneNumber")));
     }
 
     public Adopter getById(int id){
-        try {
-            String sql = "SELECT * FROM adopters WHERE adopterId = ?";
-            return jdbcTemplate.queryForObject(sql, new Object[]{id}, (resultSet, rowNum) ->
-                    new Adopter(
-                            resultSet.getInt("adopterId"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"),
-                            resultSet.getString("password"),
-                            resultSet.getString("phoneNumber")
-                    )
-            );
-        } catch (EmptyResultDataAccessException e) {
-            System.out.println("Not Found");
-            return null;
-        } catch (DataAccessException e) {
-            // Log the exception or handle it as needed
-            throw new RuntimeException("Error retrieving adopter by id", e);
-        }
+        String sql = "SELECT * FROM adopters WHERE adopterId = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (resultSet, rowNum) ->
+                new Adopter(
+                        resultSet.getInt("adopterId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("phoneNumber")
+                )
+        );
     }
 }

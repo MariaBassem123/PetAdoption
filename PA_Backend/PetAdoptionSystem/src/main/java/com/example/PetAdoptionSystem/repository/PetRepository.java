@@ -12,14 +12,10 @@ public class PetRepository {
     private JdbcTemplate jdbcTemplate;
 
     public void savePet(Pet pet){
-        try {
-            String sql = "INSERT INTO pet (shelterId, name, birthDate, gender, species, breed, description, behaviour, healthStatus) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sql, pet.getShelterId(), pet.getName(), pet.getBirthDate(), pet.getGender(),
-                    pet.getSpecies(), pet.getBreed(), pet.getDescription(), pet.getBehaviour(), pet.getHealthStatus());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String sql = "INSERT INTO pet (shelterId, name, birthDate, gender, species, breed, description, behaviour, healthStatus) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, pet.getShelterId(), pet.getName(), pet.getBirthDate(), pet.getGender(),
+                pet.getSpecies(), pet.getBreed(), pet.getDescription(), pet.getBehaviour(), pet.getHealthStatus());
     }
 
 }
