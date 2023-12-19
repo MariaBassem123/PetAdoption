@@ -1,6 +1,5 @@
 package com.example.PetAdoptionSystem.repository;
 
-import com.example.PetAdoptionSystem.model.Adopter;
 import com.example.PetAdoptionSystem.model.Staff;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;

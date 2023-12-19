@@ -11,7 +11,7 @@ import java.util.List;
 public class AdopterService {
 
     @Autowired
-    private  adopterRepository jdbcAdopterRepository;
+    private adopterRepository jdbcAdopterRepository;
 
     public void saveAdopter(Adopter adopter) {
         jdbcAdopterRepository.saveAdopter(adopter);

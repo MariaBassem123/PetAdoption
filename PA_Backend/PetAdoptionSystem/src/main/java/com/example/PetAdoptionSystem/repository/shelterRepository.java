@@ -30,7 +30,6 @@ public class shelterRepository {
         }
     }
 
-
     public List<Shelter> getAllShelters() {
         return jdbcTemplate.query("SELECT * FROM Shelter",
                 (resultSet, rowNum) -> new Shelter(resultSet.getInt("shelterId"),
