@@ -1,7 +1,7 @@
 package com.example.PetAdoptionSystem.service;
 
 import com.example.PetAdoptionSystem.model.Adopter;
-import com.example.PetAdoptionSystem.repository.JdbcAdopterRepository;
+import com.example.PetAdoptionSystem.repository.adopterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +10,10 @@ import java.util.List;
 @Service
 public class AdopterService {
 
-    private final JdbcAdopterRepository jdbcAdopterRepository;
+    private final adopterRepository jdbcAdopterRepository;
 
     @Autowired
-    public AdopterService(JdbcAdopterRepository jdbcAdopterRepository) {
+    public AdopterService(adopterRepository jdbcAdopterRepository) {
         this.jdbcAdopterRepository = jdbcAdopterRepository;
     }
 
