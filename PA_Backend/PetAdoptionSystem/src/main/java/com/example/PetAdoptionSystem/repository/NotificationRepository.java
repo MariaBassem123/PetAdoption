@@ -11,7 +11,7 @@ public class NotificationRepository {
     private JdbcTemplate jdbcTemplate;
 
     public void saveNotification(Notification notification){
-        String sql = "INSERT INTO Notification (adopterId, description) VALUES (?, ?)";
-        jdbcTemplate.update(sql, notification.getAdopterId(), notification.getDescription());
+        String sql = "INSERT INTO Notification (adopterId, description,status) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, notification.getAdopterId(), notification.getDescription(), notification.isStatus());
     }
 }
