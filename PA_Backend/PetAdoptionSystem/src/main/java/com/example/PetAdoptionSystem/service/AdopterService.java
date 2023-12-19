@@ -24,4 +24,6 @@ public class AdopterService {
     public List<Adopter> getAllAdopters() {
         return jdbcAdopterRepository.getAllAdopters();
     }
+
+    public Adopter getById(int id){ return jdbcAdopterRepository.getById(id); }
 }
