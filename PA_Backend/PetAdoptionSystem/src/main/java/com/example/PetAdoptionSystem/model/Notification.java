@@ -40,3 +40,13 @@ public class Notification {
         this.status = status;
     }
 }
+
+
+//    CREATE TABLE Notification (
+//        notificationId INT auto_increment,
+//        adopterId INT,
+//        description VARCHAR(255),
+//    status BOOLEAN NOT NULL,
+//    FOREIGN KEY (adopterId) REFERENCES Adopters(adopterId) on delete cascade on update cascade,
+//        primary key(notificationId, adopterId)
+//        );

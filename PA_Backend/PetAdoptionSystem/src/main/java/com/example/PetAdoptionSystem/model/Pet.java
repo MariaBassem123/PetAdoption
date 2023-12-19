@@ -91,3 +91,19 @@ public class Pet {
         this.healthStatus = healthStatus;
     }
 }
+
+
+//    CREATE TABLE Pet (
+//        petId INT AUTO_INCREMENT,
+//        shelterId INT,
+//        name VARCHAR(25) NOT NULL,
+//    birthDate DATE NOT NULL,
+//    gender BOOLEAN NOT NULL,
+//    species VARCHAR(30) NOT NULL,
+//    breed VARCHAR(30) NOT NULL,
+//    description VARCHAR(255),
+//    behaviour VARCHAR(255),
+//    healthStatus VARCHAR(255),
+//    FOREIGN KEY (shelterId) REFERENCES Shelter(shelterId) on delete cascade on update cascade,
+//        PRIMARY KEY (petId , shelterId)
+//        );
