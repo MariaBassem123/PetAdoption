@@ -22,10 +22,6 @@ public class Shelter {
         return shelterId;
     }
 
-    public void setShelterId(int shelterId) {
-        this.shelterId = shelterId;
-    }
-
     public String getName() {
         return name;
     }

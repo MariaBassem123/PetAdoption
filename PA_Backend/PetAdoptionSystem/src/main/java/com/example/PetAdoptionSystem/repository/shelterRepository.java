@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -33,15 +32,24 @@ public class shelterRepository {
 
 
     public List<Shelter> getAllShelters() {
-        return jdbcTemplate.query("SELECT * FROM Shelter", new ShelterRowMapper());
+        return jdbcTemplate.query("SELECT * FROM Shelter",
+                (resultSet, rowNum) -> new Shelter(resultSet.getInt("shelterId"),
+                                resultSet.getString("name"),
+                                resultSet.getString("email"),
+                                resultSet.getString("phone_number"),
+                                resultSet.getString("location")));
     }
 
     public Shelter getShelterByName(String name){
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Shelter WHERE name = ?",
-                    new Object[]{name},
-                    new ShelterRowMapper()
+                    new Object[]{name}, (resultSet, rowNum) ->
+                            new Shelter(resultSet.getInt("shelterId"),
+                                    resultSet.getString("name"),
+                                    resultSet.getString("email"),
+                                    resultSet.getString("phone_number"),
+                                    resultSet.getString("location"))
             );
         } catch (EmptyResultDataAccessException e) {
             // Shelter with the given name not found
@@ -51,26 +59,16 @@ public class shelterRepository {
     public Shelter getShelterById(int Id){
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Shelter WHERE ShelterId = ?",
-                    new Object[]{Id},
-                    new ShelterRowMapper()
+                    "SELECT * FROM Shelter WHERE ShelterId = ?", new Object[]{Id}, (resultSet, rowNum) ->
+                            new Shelter(resultSet.getInt("shelterId"),
+                                    resultSet.getString("name"),
+                                    resultSet.getString("email"),
+                                    resultSet.getString("phone_number"),
+                                    resultSet.getString("location"))
             );
         } catch (EmptyResultDataAccessException e) {
             // Shelter with the given id not found
             return null;
-        }
-    }
-
-    private static class ShelterRowMapper implements RowMapper<Shelter> {
-        @Override
-        public Shelter mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-            Shelter shelter = new Shelter();
-            shelter.setShelterId(resultSet.getInt("shelterId"));
-            shelter.setName(resultSet.getString("name"));
-            shelter.setEmail(resultSet.getString("email"));
-            shelter.setPhone_number(resultSet.getString("phone_number"));
-            shelter.setLocation(resultSet.getString("location"));
-            return shelter;
         }
     }
 }
