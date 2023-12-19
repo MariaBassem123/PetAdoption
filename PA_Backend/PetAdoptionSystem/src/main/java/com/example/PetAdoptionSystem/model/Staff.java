@@ -72,3 +72,23 @@ public class Staff {
                 '}';
     }
 }
+/*
+CREATE TABLE Staff (
+	staffId INT AUTO_INCREMENT,
+	shelterId INT,
+	primary key(staffId, shelterId),
+	name VARCHAR(50) NOT NULL ,
+	email VARCHAR(80) NOT NULL,
+	phone_number VARCHAR(11) NOT NULL,
+	role INT NOT NULL,
+	CONSTRAINT fk_shelter FOREIGN KEY (shelterId) REFERENCES Shelter(shelterId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+drop table staff;
+
+INSERT INTO Staff (shelterId, name, email, phone_number, role) VALUES
+    (1, 'John Doe', 'john@example.com', '12345678901', 1),
+    (1, 'Jane Doe', 'jane@example.com', '01234567890', 2),
+    (2, 'Bob Smith', 'bob@example.com','12345678102', 1),
+    (2, 'Alice Johnson', 'alice@example.com','12345433901', 0);
+
+ */
