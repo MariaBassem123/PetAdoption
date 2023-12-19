@@ -14,13 +14,13 @@ public class AdopterRepository {
     private JdbcTemplate jdbcTemplate;
 
     public void saveAdopter(Adopter adopter) {
-        String sql = "INSERT INTO adopters (name, email, password, phoneNumber) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO adopter (name, email, password, phoneNumber) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, adopter.getName(), adopter.getEmail(), adopter.getPassword(), adopter.getPhoneNumber());
 
     }
 
     public List<Adopter> getAllAdopters() {
-        String sql = "SELECT * FROM adopters";
+        String sql = "SELECT * FROM adopter";
         return jdbcTemplate.query(sql, (resultSet, rowNum) ->
                 new Adopter(resultSet.getInt("adopterId"),
                         resultSet.getString("name"),
@@ -30,7 +30,7 @@ public class AdopterRepository {
     }
 
     public Adopter getById(int id){
-        String sql = "SELECT * FROM adopters WHERE adopterId = ?";
+        String sql = "SELECT * FROM adopter WHERE adopterId = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, (resultSet, rowNum) ->
                 new Adopter(
                         resultSet.getInt("adopterId"),
