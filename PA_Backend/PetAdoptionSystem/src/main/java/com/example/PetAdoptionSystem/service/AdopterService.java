@@ -10,12 +10,8 @@ import java.util.List;
 @Service
 public class AdopterService {
 
-    private final adopterRepository jdbcAdopterRepository;
-
     @Autowired
-    public AdopterService(adopterRepository jdbcAdopterRepository) {
-        this.jdbcAdopterRepository = jdbcAdopterRepository;
-    }
+    private  adopterRepository jdbcAdopterRepository;
 
     public void saveAdopter(Adopter adopter) {
         jdbcAdopterRepository.saveAdopter(adopter);
