@@ -69,3 +69,21 @@ public class Shelter {
                 '}';
     }
 }
+
+/*
+shelterCREATE DATABASE pet_adoption_system;
+
+CREATE TABLE Shelter (
+    shelterId INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(80) NOT NULL,
+    phone_number VARCHAR(11) NOT NULL,
+    location VARCHAR(255)
+);
+
+INSERT INTO Shelter (name, email, phone_number, location)
+VALUES
+    ('Shelter 1', 'shelter1@example.com', '12345678901', 'Location 1'),
+    ('Shelter 2', 'shelter2@example.com', '23456789012', 'Location 2'),
+    ('Shelter 3', 'shelter3@example.com', '34567890123', 'Location 3');
+ */

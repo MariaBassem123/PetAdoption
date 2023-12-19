@@ -3,6 +3,7 @@ package com.example.PetAdoptionSystem.repository;
 import com.example.PetAdoptionSystem.model.Shelter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -33,6 +34,31 @@ public class shelterRepository {
 
     public List<Shelter> getAllShelters() {
         return jdbcTemplate.query("SELECT * FROM Shelter", new ShelterRowMapper());
+    }
+
+    public Shelter getShelterByName(String name){
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Shelter WHERE name = ?",
+                    new Object[]{name},
+                    new ShelterRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            // Shelter with the given name not found
+            return null;
+        }
+    }
+    public Shelter getShelterById(int Id){
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Shelter WHERE ShelterId = ?",
+                    new Object[]{Id},
+                    new ShelterRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            // Shelter with the given id not found
+            return null;
+        }
     }
 
     private static class ShelterRowMapper implements RowMapper<Shelter> {
