@@ -6,6 +6,7 @@ public class Staff {
     String name;
     String email;
     String phone_number;
+    String password;
     int role;
 
     public Staff(int staffId, int shelterId, String name, String email, String phone_number, int role) {
@@ -56,6 +57,13 @@ public class Staff {
         this.phone_number = phone_number;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public int getRole() {
         return role;
     }
@@ -78,7 +86,8 @@ CREATE TABLE Staff (
 	shelterId INT,
 	primary key(staffId, shelterId),
 	name VARCHAR(50) NOT NULL ,
-	email VARCHAR(80) NOT NULL,
+	email VARCHAR(80) NOT NULL unique,
+	password VARCHAR(25) NOT NULL,
 	phone_number VARCHAR(11) NOT NULL,
 	role INT NOT NULL,
 	CONSTRAINT fk_shelter FOREIGN KEY (shelterId) REFERENCES Shelter(shelterId) ON DELETE CASCADE ON UPDATE CASCADE

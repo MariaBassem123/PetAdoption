@@ -78,7 +78,24 @@ public class staffRepository {
     public Staff getByStaffName(String name){
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Staff WHERE ShelterId = ?", new Object[]{name}, (resultSet, rowNum) ->
+                    "SELECT * FROM Staff WHERE name = ?", new Object[]{name}, (resultSet, rowNum) ->
+                            new Staff(resultSet.getInt("staffId"),
+                                    resultSet.getInt("shelterId"),
+                                    resultSet.getString("name"),
+                                    resultSet.getString("email"),
+                                    resultSet.getString("phone_number"),
+                                    resultSet.getInt("role"))
+            );
+        } catch (EmptyResultDataAccessException e) {
+            // Staff with the given id not found
+            return null;
+        }
+    }
+
+    public Staff getStaffByEmail(String email) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Staff WHERE email = ?", new Object[]{email}, (resultSet, rowNum) ->
                             new Staff(resultSet.getInt("staffId"),
                                     resultSet.getInt("shelterId"),
                                     resultSet.getString("name"),
