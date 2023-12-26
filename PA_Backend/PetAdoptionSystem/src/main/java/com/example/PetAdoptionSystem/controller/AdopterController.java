@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/adopters")
+@CrossOrigin()
 public class AdopterController {
 
     @Autowired
@@ -24,7 +25,7 @@ public class AdopterController {
             adopterService.saveAdopter(adopter);
             return ResponseEntity.status(HttpStatus.CREATED).body("Adopter saved successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving adopter");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 

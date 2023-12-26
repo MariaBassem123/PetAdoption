@@ -1,7 +1,9 @@
 package com.example.PetAdoptionSystem.repository;
 
 import com.example.PetAdoptionSystem.model.Adopter;
+import com.example.PetAdoptionSystem.model.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -40,5 +42,21 @@ public class AdopterRepository {
                         resultSet.getString("phoneNumber")
                 )
         );
+    }
+
+    public Adopter getAllAdopterByEmail(String email) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM adopter WHERE email = ?", new Object[]{email}, (resultSet, rowNum) ->
+                            new Adopter(resultSet.getInt("adopterId"),
+                                    resultSet.getString("name"),
+                                    resultSet.getString("email"),
+                                    resultSet.getString("password"),
+                                    resultSet.getString("phoneNumber"))
+            );
+        } catch (EmptyResultDataAccessException e) {
+            // Staff with the given id not found
+            return null;
+        }
     }
 }

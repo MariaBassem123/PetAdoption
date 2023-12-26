@@ -18,13 +18,9 @@ public class staffRepository {
     }
 
     public void save(Staff staff) {
-        try {
-            jdbcTemplate.update("INSERT INTO Staff (shelterId, name, email, phone_number, role) VALUES (?, ?, ?, ?, ?)",
-                    staff.getShelterId(), staff.getName(), staff.getEmail(), staff.getPhone_number(), staff.getRole());
-        } catch (DataIntegrityViolationException e) {
-            // Handle unique constraint violation (e.g., display a message or log the error)
-            System.err.println("Error in save of Staff");
-        }
+            jdbcTemplate.update("INSERT INTO Staff (shelterId, password , name, email, phone_number, role) VALUES (?, ?, ?, ?, ?, ?)",
+                    staff.getShelterId(), staff.getPassword(),staff.getName(), staff.getEmail(), staff.getPhone_number(), staff.getRole());
+
     }
 
     public List<Staff> getAllStaffs() {

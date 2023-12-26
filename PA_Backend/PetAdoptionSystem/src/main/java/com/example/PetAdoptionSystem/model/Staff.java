@@ -17,12 +17,13 @@ public class Staff {
         this.phone_number = phone_number;
         this.role = role;
     }
-    public Staff(int shelterId, String name, String email, String phone_number, int role) {
+    public Staff(int shelterId, String name, String email, String phone_number, int role, String password) {
         this.shelterId = shelterId;
         this.name = name;
         this.email = email;
         this.phone_number = phone_number;
         this.role = role;
+        this.password=password;
     }
     public Staff(){}
     public int getStaffId() {
