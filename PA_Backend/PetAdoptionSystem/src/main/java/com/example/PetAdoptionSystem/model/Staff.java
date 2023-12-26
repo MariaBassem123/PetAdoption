@@ -9,22 +9,16 @@ public class Staff {
     String password;
     int role;
 
-    public Staff(int staffId, int shelterId, String name, String email, String phone_number, int role) {
+    public Staff(int staffId, int shelterId, String name, String email, String phone_number, String password, int role) {
         this.staffId = staffId;
         this.shelterId = shelterId;
         this.name = name;
         this.email = email;
         this.phone_number = phone_number;
+        this.password = password;
         this.role = role;
     }
-    public Staff(int shelterId, String name, String email, String phone_number, int role, String password) {
-        this.shelterId = shelterId;
-        this.name = name;
-        this.email = email;
-        this.phone_number = phone_number;
-        this.role = role;
-        this.password=password;
-    }
+
     public Staff(){}
     public int getStaffId() {
         return staffId;
@@ -65,6 +59,7 @@ public class Staff {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public int getRole() {
         return role;
     }
@@ -77,6 +72,7 @@ public class Staff {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone_number='" + phone_number + '\'' +
+                ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
     }

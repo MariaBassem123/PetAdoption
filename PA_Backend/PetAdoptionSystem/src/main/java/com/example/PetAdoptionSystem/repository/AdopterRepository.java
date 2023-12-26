@@ -59,4 +59,17 @@ public class AdopterRepository {
             return null;
         }
     }
+
+    public Adopter getAdopterByEmail(String email) {
+        String sql = "SELECT * FROM adopter WHERE email = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{email}, (resultSet, rowNum) ->
+                new Adopter(
+                        resultSet.getInt("adopterId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password"),
+                        resultSet.getString("phoneNumber")
+                )
+        );
+    }
 }

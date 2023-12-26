@@ -54,4 +54,15 @@ public class AdopterController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/checkAdopter")
+    public ResponseEntity<String> checkAdopter(@RequestParam String email, @RequestParam String password) {
+        AdopterService.LoginStatus loginStatus = adopterService.checkAdopter(email, password);
+        return ResponseEntity.ok(loginStatus.name());
+    }
+
+    @GetMapping("/getAdopterByEmail")
+    public Adopter getAdopterByEmail(@RequestParam String email, @RequestParam String password) {
+        return adopterService.getAdopter(email, password);
+    }
 }

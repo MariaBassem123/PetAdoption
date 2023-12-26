@@ -46,4 +46,39 @@ public class AdopterService {
         return jdbcAdopterRepository.getAllAdopterByEmail(email) !=null;
     }
 
+    public LoginStatus checkAdopter(String email, String password) {
+        System.out.println("In adopter service: email = "+ email + ", password = " + password);
+        List<Adopter> adopterList = jdbcAdopterRepository.getAllAdopters();
+        if (email == null || password == null) return AdopterService.LoginStatus.INVALID_INPUT;
+        for (Adopter a : adopterList) {
+            if(a == null) continue;
+            if (a.getEmail().equals(email)) {
+                if (a.getPassword().equals(password)) {
+                    return LoginStatus.ADOPTER_FOUND_CORRECT_PASSWORD;
+                }
+                return AdopterService.LoginStatus.ADOPTER_FOUND_INCORRECT_PASSWORD;
+            }
+        }
+        return AdopterService.LoginStatus.ADOPTER_NOT_FOUND;
+    }
+
+    public Adopter getAdopter(String email, String password) {
+        if (email == null || password == null) return null;
+        List<Adopter> adopterList = jdbcAdopterRepository.getAllAdopters();
+        Adopter adopter = null;
+        for (Adopter a : adopterList) {
+            if (a.getEmail().equals(email) && a.getPassword().equals(password)) {
+                adopter = a;
+                break;
+            }
+        }
+        return adopter;
+    }
+
+    public enum LoginStatus {
+        ADOPTER_FOUND_CORRECT_PASSWORD,
+        ADOPTER_FOUND_INCORRECT_PASSWORD,
+        ADOPTER_NOT_FOUND,
+        INVALID_INPUT
+    }
 }
