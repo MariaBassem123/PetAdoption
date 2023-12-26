@@ -7,12 +7,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'; // Change Link to Button
 import Toolbar from '@mui/material/Toolbar';
 import Home from './Home';
-import Profile from './Profile';
+import StaffProfile from './staffProfile';
+import Shelter_Management from './Shelter_Management';
 
 const sections = [
   { title: 'Home', component: <Home /> },
-  { title: 'Profile', component: <Profile /> },
+  { title: 'Profile', component: <StaffProfile /> },
+  { title: 'Shelter Management', component: <Shelter_Management /> }
 ];
+
 
 const defaultTheme = createTheme();
 
