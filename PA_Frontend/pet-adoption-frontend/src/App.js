@@ -1,11 +1,21 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import HomePage from './component/HomePage';
+import SignUpSide from './components/signup';
+import HomePage from './components/HomePage';
+import PetDetailPage from './components/PetDetailPage';
+import AdoptionForm from './components/AdoptionForm';
 
 function App() {
   return (
-    <div className="App">
-      <HomePage/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<SignUpSide />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/pet/:id" element={<PetDetailPage />} />
+        <Route path="/form/:id" element={<AdoptionForm />} />
+      </Routes>
+    </Router>
   );
 }
 

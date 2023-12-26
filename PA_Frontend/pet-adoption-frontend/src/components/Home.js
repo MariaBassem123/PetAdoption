@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -8,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardActionArea';
 import TextField from '@mui/material/TextField';
-
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export default function Home() {
     const mainFeaturedPost = {
@@ -21,6 +21,7 @@ export default function Home() {
       
       const featuredPosts = [
         {
+          id: 1, // Add an id property
           title: 'Featured post',
           date: 'Nov 12',
           description:
@@ -29,6 +30,7 @@ export default function Home() {
           imageLabel: 'Image Text',
         },
         {
+          id: 2, // Add an id property
           title: 'Post title',
           date: 'Nov 11',
           description:
@@ -37,6 +39,7 @@ export default function Home() {
           imageLabel: 'Image Text',
         },
         {
+          id: 3, // Add an id property
           title: 'Featured post',
           date: 'Nov 12',
           description:
@@ -45,7 +48,7 @@ export default function Home() {
           imageLabel: 'Image Text',
         },
       ];
-
+      
 
       const MainFeaturedPost = (props) => {
         const { post } = props;
@@ -98,33 +101,37 @@ export default function Home() {
       };
       const FeaturedPost = (props) => {
         const { post } = props;
-    
+        const navigate = useNavigate();
+        const handleImageClick = (postId) => {
+          // Handle the click event and navigate to the PetDetailPage with the postId
+          navigate(`/pet/${postId}`);
+        };
         return (
           <Grid item xs={12} md={6}>
-          <CardActionArea component="a" href="./PetDetailPage">
-            <Card sx={{ display: 'flex' }}>
-              <CardContent sx={{ flex: 1 }}>
-                <Typography component="h2" variant="h5">
-                  {post.title}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  {post.date}
-                </Typography>
-                <Typography variant="subtitle1" paragraph>
-                  {post.description}
-                </Typography>
-              </CardContent>
-              <CardMedia
-                component="img"
-                sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
-                image={post.image}
-                alt={post.imageLabel}
-              />
-            </Card>
-          </CardActionArea>
-        </Grid>
+            <CardActionArea onClick={() => handleImageClick(post.id)} component="div">
+              <Card sx={{ display: 'flex' }}>
+                <CardContent sx={{ flex: 1 }}>
+                  <Typography component="h2" variant="h5">
+                    {post.title}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {post.date}
+                  </Typography>
+                  <Typography variant="subtitle1" paragraph>
+                    {post.description}
+                  </Typography>
+                </CardContent>
+                <CardMedia
+                  component="img"
+                  sx={{ width: 160, display: { xs: 'none', sm: 'block' } }}
+                  image={post.image}
+                  alt={post.imageLabel}
+                />
+              </Card>
+            </CardActionArea>
+          </Grid>
         );
-      };    
+      };
     return(
         <main>
         <MainFeaturedPost post={mainFeaturedPost} />
