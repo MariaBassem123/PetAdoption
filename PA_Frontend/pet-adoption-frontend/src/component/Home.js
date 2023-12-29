@@ -15,13 +15,7 @@ import DialogActions from '@mui/material/DialogActions';
 import { useNavigate, useParams  } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 
-export default function Home() {
-
-  const { adopterData } = useParams();
-  const decodedAdopterData = decodeURIComponent(adopterData);
-  const parsedAdopterData = JSON.parse(atob(decodedAdopterData));
-
-  console.log("Data:", parsedAdopterData);
+export default function Home({user}) {
 
   const BaseUri = 'http://localhost:8088';
   const mainFeaturedPost = {
@@ -107,7 +101,7 @@ export default function Home() {
   const FeaturedPet = (props) => {
     const { pet } = props;
     const handleImageClick = (pet) => {
-      navigate(`/pet/${pet.pet.petId}`, { state: { pet } });
+      navigate(`/pet/${user.adopterId}/${pet.pet.petId}`, { state: { user, pet } });
     };
   
     return (
@@ -174,7 +168,7 @@ export default function Home() {
       try {
         // Step 1: Add the pet
         const petInfoObject = {
-          shelterId: parsedAdopterData.shelterId,
+          shelterId: user.shelterId,
           name: petInfo.name,
           birthDate: petInfo.age,
           species: petInfo.species,
@@ -213,7 +207,7 @@ export default function Home() {
               formData.append('attachment', document)
               formData.append('petId', petId);
               formData.append('type', document.type);
-              formData.append('shelterId', parsedAdopterData.shelterId);
+              formData.append('shelterId', user.shelterId);
 
               console.log(formData);
 
@@ -355,7 +349,7 @@ export default function Home() {
       </Grid>
 
 
-      {(parsedAdopterData.role == 0) || (parsedAdopterData.role == 1) && (
+      {(user.role == 0) || (user.role == 1) && (
       <Button
         onClick={() => setModalOpen(true)}
         variant="contained"

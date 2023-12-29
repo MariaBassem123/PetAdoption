@@ -1,6 +1,5 @@
 package com.example.PetAdoptionSystem.repository;
 
-import com.example.PetAdoptionSystem.model.Status;
 import com.example.PetAdoptionSystem.model.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -36,7 +35,7 @@ public class ApplicationRepository {
                     new Application(resultSet.getInt("petId"),
                             resultSet.getInt("shelterId"),
                             resultSet.getInt("adopterId"),
-                            Status.valueOf(resultSet.getString("status"))));
+                            resultSet.getInt("status")));
         } catch (DataAccessException e) {
             throw new RuntimeException("Error retrieving Applications", e);
         }
