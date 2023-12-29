@@ -22,7 +22,7 @@ public class DocumentRepository {
     }
 
     public List<Document> findImgById(int petId, int shelterId) {
-        String sql = "SELECT * FROM document WHERE petId = ? AND shelterId = ? AND type = 'img'";
+        String sql = "SELECT * FROM document WHERE petId = ? AND shelterId = ? AND type = 'image/jpeg'";
 
         return jdbcTemplate.query(sql, new Object[]{petId, shelterId}, (resultSet, rowNum) ->
                 new Document(resultSet.getInt("documentId"),

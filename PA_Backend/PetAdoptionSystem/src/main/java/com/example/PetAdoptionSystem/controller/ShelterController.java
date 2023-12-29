@@ -33,6 +33,7 @@ public class ShelterController {
     public ResponseEntity<List<Shelter>> getAllAShelters() {
         try {
             List<Shelter> shelters = shelterService.getAllShelters();
+            System.out.println(shelters);
             return ResponseEntity.ok(shelters);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

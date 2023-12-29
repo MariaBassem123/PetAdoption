@@ -32,6 +32,9 @@ public class PetController {
     public ResponseEntity<List<PetDto>> getAllPets() {
         try {
             List<PetDto> pets = petService.getAllPetsWithImg();
+            System.out.println(pets.get(0).getPet());
+            System.out.println(pets.get(0).getImg());
+
             return ResponseEntity.ok(pets);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

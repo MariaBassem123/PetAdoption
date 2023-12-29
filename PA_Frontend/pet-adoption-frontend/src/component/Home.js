@@ -103,7 +103,7 @@ export default function Home() {
       </Paper>
     );
   };
-  
+
   const FeaturedPet = (props) => {
     const { pet } = props;
     const handleImageClick = (pet) => {
@@ -141,6 +141,7 @@ export default function Home() {
     );
   };
   
+
   const AddPetModal = () => {
     const [petInfo, setPetInfo] = useState({
       name: '',
