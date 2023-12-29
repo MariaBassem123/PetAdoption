@@ -33,4 +33,18 @@ public class Application {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    /*
+    CREATE TABLE Application (
+    petId INT,
+    shelterId INT,
+    adopterId INT,
+    status ENUM('APPROVED', 'WAITING', 'REJECTED'),
+    PRIMARY KEY (petId, shelterId, adopterId),
+    CONSTRAINT fk_pet_application FOREIGN KEY (petId) REFERENCES Pet(petId) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_shelter_application FOREIGN KEY (shelterId) REFERENCES Pet(shelterId) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_adopter_application FOREIGN KEY (adopterId) REFERENCES Adopter(adopterId) ON DELETE CASCADE ON UPDATE CASCADE
+    );
+    drop table Application;
+    */
 }

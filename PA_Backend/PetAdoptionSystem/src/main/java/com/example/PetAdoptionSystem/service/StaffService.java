@@ -31,7 +31,8 @@ public class StaffService {
     public List<Staff> getAllStaffs(){
         return jdbcStaffRepository.getAllStaffs();
     }
-//
+
+
 //    public Staff getByStaffId(int id) {
 //        return jdbcStaffRepository.getByStaffId(id);
 //    }

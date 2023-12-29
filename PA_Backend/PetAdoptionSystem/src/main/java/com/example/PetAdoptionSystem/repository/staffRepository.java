@@ -24,18 +24,29 @@ public class staffRepository {
     }
 
     public List<Staff> getAllStaffs() {
-        try {
-            return jdbcTemplate.query("SELECT * FROM Staff", (resultSet, rowNum) ->
-                    new Staff(resultSet.getInt("staffId"),
-                            resultSet.getInt("shelterId"),
-                            resultSet.getString("name"),
-                            resultSet.getString("email"),
-                            resultSet.getString("phone_number"),
-                            resultSet.getString("password"),  // Corrected order: password comes after phone_number
-                            resultSet.getInt("role")));
-        } catch (DataAccessException e) {
-            throw new RuntimeException("Error retrieving Staff", e);
-        }
+        return jdbcTemplate.query("SELECT * FROM Staff", (resultSet, rowNum) ->
+                new Staff(resultSet.getInt("staffId"),
+                        resultSet.getInt("shelterId"),
+                        resultSet.getString("name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("password"),
+                        resultSet.getInt("role")));
+    }
+
+    public List<Staff> getAllStaffsByShelterId(int shelterId) {
+        return jdbcTemplate.query("SELECT * FROM Staff WHERE shelterId = ?", new Object[]{shelterId},
+                (resultSet, rowNum) ->
+                        new Staff(
+                                resultSet.getInt("staffId"),
+                                resultSet.getInt("shelterId"),
+                                resultSet.getString("name"),
+                                resultSet.getString("email"),
+                                resultSet.getString("phone_number"),
+                                resultSet.getString("password"),
+                                resultSet.getInt("role")
+                        )
+        );
     }
 //
 //    public Staff getByStaffId(int Id){

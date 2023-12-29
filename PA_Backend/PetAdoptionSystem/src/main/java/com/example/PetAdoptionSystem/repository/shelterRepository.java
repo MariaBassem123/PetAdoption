@@ -51,7 +51,6 @@ public class shelterRepository {
         }
     }
     public Shelter getShelterById(int Id){
-        try {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Shelter WHERE ShelterId = ?", new Object[]{Id}, (resultSet, rowNum) ->
                             new Shelter(resultSet.getInt("shelterId"),
@@ -60,9 +59,23 @@ public class shelterRepository {
                                     resultSet.getString("phone_number"),
                                     resultSet.getString("location"))
             );
-        } catch (EmptyResultDataAccessException e) {
-            // Shelter with the given id not found
-            return null;
-        }
+    }
+
+    public boolean updateShelterEmail(int shelterId, String newEmail) {
+        String sql = "UPDATE Shelter SET email = ? WHERE shelterId = ?";
+        int rowsAffected = jdbcTemplate.update(sql, newEmail, shelterId);
+        return rowsAffected > 0;
+    }
+
+    public boolean updateShelterLocation(int shelterId, String newLocation) {
+        String sql = "UPDATE Shelter SET location = ? WHERE shelterId = ?";
+        int rowsAffected = jdbcTemplate.update(sql, newLocation, shelterId);
+        return rowsAffected > 0;
+    }
+
+    public boolean updateShelterPhoneNumber(int shelterId, String newPhoneNumber) {
+        String sql = "UPDATE Shelter SET phone_number = ? WHERE shelterId = ?";
+        int rowsAffected = jdbcTemplate.update(sql, newPhoneNumber, shelterId);
+        return rowsAffected > 0;
     }
 }
