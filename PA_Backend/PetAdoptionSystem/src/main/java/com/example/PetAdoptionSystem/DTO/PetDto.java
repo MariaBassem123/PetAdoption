@@ -12,7 +12,7 @@ public class PetDto {
 
     public PetDto() {
     }
-    
+
     public PetDto(Pet pet, List<String> img) {
         this.pet = pet;
         this.img = img;
