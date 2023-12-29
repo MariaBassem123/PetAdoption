@@ -5,11 +5,19 @@ import com.example.PetAdoptionSystem.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NotificationService {
 
     @Autowired
     private NotificationRepository notificationRepository;
 
-    public void saveNotification(Notification notification){ notificationRepository.saveNotification(notification); }
+    public void saveNotification(Notification notification){
+        notificationRepository.saveNotification(notification);
+    }
+    
+    public List<Notification> getAllNotificationsByAdopterId(int adopterId) {
+        return notificationRepository.getAllNotificationsByAdopterId(adopterId);
+    }
 }
