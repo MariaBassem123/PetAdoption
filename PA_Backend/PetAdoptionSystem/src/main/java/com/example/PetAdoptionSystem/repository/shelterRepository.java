@@ -19,13 +19,9 @@ public class shelterRepository {
     }
 
     public void save(Shelter shelter) {
-        try {
             jdbcTemplate.update("INSERT INTO Shelter (name, email, phone_number, location) VALUES (?, ?, ?, ?)",
                     shelter.getName(), shelter.getEmail(), shelter.getPhone_number(), shelter.getLocation());
-        } catch (DataIntegrityViolationException e) {
-            // Handle unique constraint violation (e.g., display a message or log the error)
-            System.err.println("Error in save: Shelter with the same name already exists.");
-        }
+
     }
 
     public List<Shelter> getAllShelters() {

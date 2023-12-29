@@ -27,6 +27,7 @@ export default function SignUpSide() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log(data.get('Shelter Phone'));
     const user= {
       username: data.get('username'),
       email: data.get('email'),
@@ -56,7 +57,7 @@ export default function SignUpSide() {
                 email: user.email,
                 phone_number: user.phone,
                 password: user.password,
-                role: 1
+                role: 0
               })
         })
         
@@ -71,6 +72,56 @@ export default function SignUpSide() {
         } else {
             alert("Wrong info.")
         }
+    }else if(user.role==="manager"){
+
+      console.log("in manager");
+      const shelterResponse = fetch(`${BaseUri}/shelter/save`, { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: data.get('Shelter Name'),
+              email: data.get('Shelter email'),
+              phone_number: data.get('Shelter Phone'),
+              location: data.get('Shelter Location'),
+            })
+      })
+      
+      if((await shelterResponse).ok){
+          console.log('Welcome shelter! Horray!!')
+          const shelter = await signInService.getShelter(data.get('Shelter Name'));
+          console.log(shelter.data.shelterId)
+
+          const response = fetch(`${BaseUri}/staffs/save`, { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              shelterId:shelter.data.shelterId,
+              name: user.username,
+              email: user.email,
+              phone_number: user.phone,
+              password: user.password,
+              role: 1
+              })
+          })
+            
+          if((await response).ok){
+              alert('Welcome '+ user.username + '! Horray!!')
+              const Staff = await signInService.getStaff(data.get('email'), data.get('password'));
+              console.log(Staff.data)
+              //navigate(`/home/${encodeURIComponent(Staff.data)}`);
+              const staffDataString = btoa(JSON.stringify(Staff.data));
+              navigate(`/home/${encodeURIComponent(staffDataString)}`);
+
+          } else {
+              alert("Wrong info.")
+          }
+      
+      
+        } else {
+          alert("Wrong info.")
+      }
+
+
     }
     else if(user.role==="adopter")
     {
@@ -213,7 +264,7 @@ export default function SignUpSide() {
                 id="confirmPassword"
                 autoComplete="new-password"
               />
-                            <RadioGroup
+              <RadioGroup
                 aria-label="role"
                 name="role"
                 value={selectedRole}
@@ -239,44 +290,44 @@ export default function SignUpSide() {
               )}
 
               {selectedRole === 'manager' && showShelterInput && (
-                <>
+                <div>
                   <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="name"
+                    id="Shelter Name"
                     label="Shelter Name"
-                    name="name"
+                    name="Shelter Name"
                     autoComplete="name"
                   />
                   <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="location"
+                    id="Shelter Location"
                     label="Shelter Location"
-                    name="location"
+                    name="Shelter Location"
                     autoComplete="location"
                   />
                   <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="phone"
+                    id="Shelter Phone"
                     label="Shelter Phone Number"
-                    name="phone"
+                    name="Shelter Phone"
                     autoComplete="phone"
                   />
                   <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="email"
+                    id="Shelter email"
                     label="Shelter Email"
-                    name="email"
+                    name="Shelter email"
                     autoComplete="email"
                   />
-                </>
+                </div>
               )}
      
               <Button
