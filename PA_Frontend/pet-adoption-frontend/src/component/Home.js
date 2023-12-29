@@ -16,7 +16,6 @@ import { useNavigate, useParams  } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 
 export default function Home({user}) {
-
   const BaseUri = 'http://localhost:8088';
   const mainFeaturedPost = {
     title: 'Title of a longer featured blog Pet',
@@ -122,13 +121,20 @@ export default function Home({user}) {
                 {pet.pet.description}
               </Typography>
             </CardContent>
-            {pet.img && pet.img.length > 0 && (
+            {pet.img && pet.img.length > 0 ? (
               <img
                 src={pet.img[0]} // Assuming the first image is the main image
                 alt={pet.pet.name}
                 style={{ objectFit: 'cover', height: '250px', width: '250px', marginBottom: '12px' }}
               />
+            ) : (
+              <img
+                src="https://t4.ftcdn.net/jpg/04/17/87/67/360_F_417876741_pofg19rDWTv6ZmgQ8qTOgVMJ0H3N2uPh.jpg"
+                alt="Default"
+                style={{ objectFit: 'cover', height: '250px', width: '250px', marginBottom: '12px' }}
+              />
             )}
+
           </Card>
         </CardActionArea>
       </Grid>
@@ -349,16 +355,17 @@ export default function Home({user}) {
       </Grid>
 
 
-      {(user.role == 0) || (user.role == 1) && (
-      <Button
-        onClick={() => setModalOpen(true)}
-        variant="contained"
-        color="primary"
-        sx={{ position: 'fixed', bottom: 16, right: 200 }}
-      >
-        Add Pet
-      </Button>
-     )}
+      {(user.role === 0 || user.role === 1) && (
+        <Button
+          onClick={() => setModalOpen(true)}
+          variant="contained"
+          color="primary"
+          sx={{ position: 'fixed', bottom: 16, right: 200 }}
+        >
+          Add Pet
+        </Button>
+      )}
+
 
       <AddPetModal />
 

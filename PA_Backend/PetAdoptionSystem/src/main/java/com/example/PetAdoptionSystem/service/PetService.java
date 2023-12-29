@@ -8,6 +8,7 @@ import com.example.PetAdoptionSystem.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,21 +33,24 @@ public class PetService {
     public List<PetDto> getAllPetsWithImg() {
         List<Pet> pets = petRepository.getAllPets();
         return pets.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToDTOWithImages)
                 .collect(Collectors.toList());
     }
 
-    public PetDto convertToDTO(Pet pet) {
+    public PetDto convertToDTOWithImages(Pet pet) {
         List<Document> documents = documentRepository.findImgById(pet.getPetId(), pet.getShelterId());
-        if (documents == null || documents.isEmpty()) {
-            return new PetDto(pet, (List<String>) null);
+        List<String> imgDataUrls = new ArrayList<>();
+
+        if (documents != null && !documents.isEmpty()) {
+            imgDataUrls = documents.stream()
+                    .map(Document::getAttachment)
+                    .map(this::convertToDataUrl)
+                    .collect(Collectors.toList());
         }
-        List<String> imgDataUrls = documents.stream()
-                .map(Document::getAttachment)
-                .map(this::convertToDataUrl)
-                .collect(Collectors.toList());
+
         return new PetDto(pet, imgDataUrls);
     }
+
 
     private String convertToDataUrl(byte[] imageBytes) {
         try {

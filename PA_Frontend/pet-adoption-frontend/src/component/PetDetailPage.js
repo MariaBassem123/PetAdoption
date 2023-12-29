@@ -1,17 +1,14 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useLocation, Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { useLocation } from 'react-router-dom';
-import signInService from '../services/signInService';
+import { useNavigate } from 'react-router-dom';
 
 const RootContainer = styled('div')({
-    
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -21,7 +18,6 @@ const RootContainer = styled('div')({
   maxWidth: '800px',
   margin: 'auto',
   background: 'linear-gradient(to bottom, #f5f5f5, #e0e0e0)',
-  
 });
 
 const ContentContainer = styled('div')({
@@ -36,10 +32,10 @@ const PetImage = styled(CardMedia)({
   maxWidth: '40%',
   height: 'auto',
   borderRadius: '10px',
+  cursor: 'pointer',
 });
 
 const PetDetails = styled(CardContent)({
-    
   textAlign: 'center',
   marginBottom: '20px',
 });
@@ -64,58 +60,24 @@ const DescriptionTypography = styled(Typography)({
 });
 
 function PetDetailPage() {
-
   const location = useLocation();
-  const { user, pet } = location.state;
+  const pet = location.state?.pet;
 
-  console.log('User:', user.adopterId);
-  console.log('Pet:', pet.pet.petId);
+  console.log(pet)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const navigate = useNavigate();
+  const handleButtonClick = (id) => {
+    // Handle the click event and navigate to the PetDetailPage with the postId
+    navigate(`/form/${id}`);
+  };
 
-  const handleButtonClick = async () => {
-    try {
-
-        const petId = pet.pet.petId;
-        console.log(`petId: ${petId}`);
-
-        console.log("shelterId:", pet.pet.shelterId);
-
-        console.log('User:', user.adopterId);
-
-        const applicationData = {
-          petId: pet.pet.petId,
-          shelterId: pet.pet.shelterId, // Assuming shelterId is directly accessible in shelterId.data
-          adopterId: user.adopterId,
-          status: 0
-        };
-
-        const response = await fetch('http://localhost:8088/applications/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // If your backend expects credentials, include this line:
-          // 'Authorization': 'Bearer ' + yourToken,
-        },
-        body: JSON.stringify(applicationData),
-      });
-      if (response.ok) {
-        console.log('Application submitted successfully');
-        // Handle success, e.g., show a success message or navigate to a different page
-      } else {
-        console.error('Failed to submit application:', response.statusText);
-        // Handle error, e.g., show an error message to the user
-      }
-    } catch (error) {
-      console.error("Error fetching shelterId or submitting application:", error);
-    }
-
-
-
-};
+  const handleImageClick = () => {
+    // Handle image click to navigate to the next image
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % pet.img.length);
+  };
 
   return (
-    
     <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
       <RootContainer>
         <ContentContainer>
@@ -134,12 +96,28 @@ function PetDetailPage() {
             <DescriptionTypography variant="body1" paragraph>
               <BoldText>Description:</BoldText> {pet.pet.description}
             </DescriptionTypography>
-          </PetDetails>
-          {/* <PetImage component="img" alt={pet.pet.name} height="140" image={pet.img[0]} /> */}
+            </PetDetails>
+          {pet.img.length > 0 ? (
+            <PetImage
+              component="img"
+              alt={pet.pet.name}
+              height="140"
+              image={pet.img[currentImageIndex]}
+              onClick={handleImageClick}
+            />
+          ) : (
+            <PetImage
+              component="img"
+              alt={pet.pet.name}
+              height="140"
+              image='https://t4.ftcdn.net/jpg/04/17/87/67/360_F_417876741_pofg19rDWTv6ZmgQ8qTOgVMJ0H3N2uPh.jpg'
+              onClick={handleImageClick}
+            />
+          )}
         </ContentContainer>
-          <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick()}>
-            Adopt the Pet
-          </AdoptButton>
+        <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick(pet.pet.petId)}>
+          Adopt the Pet
+        </AdoptButton>
       </RootContainer>
     </Container>
   );
