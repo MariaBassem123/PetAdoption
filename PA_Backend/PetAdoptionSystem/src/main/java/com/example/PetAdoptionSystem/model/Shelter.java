@@ -6,13 +6,15 @@ public class Shelter {
     String email;
     String phone_number;
     String location;
+    int managerId;
 
-    public Shelter(int shelterId, String name, String email, String phone_number, String location) {
+    public Shelter(int shelterId, String name, String email, String phone_number, String location, int managerId) {
         this.shelterId = shelterId;
         this.name = name;
         this.email = email;
         this.phone_number = phone_number;
         this.location = location;
+        this.managerId = managerId;
     }
 
     public Shelter(){
@@ -54,6 +56,10 @@ public class Shelter {
         this.location = location;
     }
 
+    public int getManagerId() {
+        return managerId;
+    }
+
     @Override
     public String toString() {
         return "Shelter{" +
@@ -74,12 +80,14 @@ CREATE TABLE Shelter (
     name VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(80) NOT NULL,
     phone_number VARCHAR(11) NOT NULL,
-    location VARCHAR(255)
+    location VARCHAR(255),
+    managerId int,
+    CONSTRAINT fk_staff FOREIGN KEY (managerId) REFERENCES Staff(staffId) ON DELETE set null ON UPDATE CASCADE
 );
 
 INSERT INTO Shelter (name, email, phone_number, location)
 VALUES
-    ('Shelter 1', 'shelter1@example.com', '12345678901', 'Location 1'),
-    ('Shelter 2', 'shelter2@example.com', '23456789012', 'Location 2'),
-    ('Shelter 3', 'shelter3@example.com', '34567890123', 'Location 3');
+    ('Shelter 1', 'shelter1@example.com', '12345678901', 'Location 1', 1),
+    ('Shelter 2', 'shelter2@example.com', '23456789012', 'Location 2', 2),
+    ('Shelter 3', 'shelter3@example.com', '34567890123', 'Location 3', 3);
  */
