@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import SignUpSide from './components/signup';
-import HomePage from './components/HomePage';
-import PetDetailPage from './components/PetDetailPage';
-import AdoptionForm from './components/AdoptionForm';
+import SignUpSide from './component/signup';
+import HomePage from './component/HomePage';
+import PetDetailPage from './component/PetDetailPage';
+import AdoptionForm from './component/AdoptionForm';
 
 function App() {
   return (
