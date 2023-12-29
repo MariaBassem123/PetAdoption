@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,6 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import ApplicationList from './ApplicationList';
+import axios from 'axios';
 
 
 const HomePage = () => {
@@ -42,7 +43,8 @@ const HomePage = () => {
   const Header = (props) => {
     const { sections, title, selectedSection, setSelectedSection } = props;
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-    
+    const [notifications, setNotifications] = useState([]);
+
     const handleNotificationClick = () => {
       setIsNotificationOpen(true);
     };
@@ -50,6 +52,22 @@ const HomePage = () => {
     const handleNotificationClose = () => {
       setIsNotificationOpen(false);
     };
+    useEffect(() => {
+      const fetchNotifications = async () => {
+        try {
+          const response = await axios.get(`http://localhost:8088/notification/adopter/${parsedAdopterData.adopterId}`);
+          setNotifications(response.data);
+        } catch (error) {
+          console.error('Error fetching notifications:', error);
+        }
+      };
+
+      if (isNotificationOpen) {
+        // Fetch notifications only when the modal is open
+        fetchNotifications();
+      }
+    }, [isNotificationOpen, parsedAdopterData.adopterId]);
+
     console.log("parseAdopter" , parsedAdopterData.role)
     return (
       <React.Fragment>
@@ -90,14 +108,18 @@ const HomePage = () => {
           )}
         </Toolbar>
         <Dialog open={isNotificationOpen} onClose={handleNotificationClose}>
-        <DialogTitle>Notifications</DialogTitle>
-        <DialogContent>
-          <Typography>This is a cute notification!</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleNotificationClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
+          <DialogTitle>Notifications</DialogTitle>
+          <DialogContent>
+            {notifications.map((notification) => (
+              <Box key={notification.notificationId} sx={{ border: '1px solid #ccc', padding: '8px', marginBottom: '8px' }}>
+                {notification.description} - {notification.notificationDate}
+              </Box>
+            ))}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleNotificationClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
       </React.Fragment>
     );
   };
