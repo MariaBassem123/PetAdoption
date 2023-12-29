@@ -110,6 +110,9 @@ export default function Home() {
                 {pet.pet.name}
               </Typography>
               <Typography variant="subtitle1" color="text.secondary">
+                {pet.pet.species}
+              </Typography>
+              <Typography variant="subtitle1" color="text.secondary">
                 {pet.pet.breed}
               </Typography>
               <Typography variant="subtitle1" paragraph>
