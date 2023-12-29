@@ -20,7 +20,7 @@ public class shelterRepository {
 
     public void save(Shelter shelter) {
         try {
-            jdbcTemplate.update("INSERT INTO Shelter (name, email, phone_number, location, managerId) VALUES (?, ?, ?, ?, ?)",
+            jdbcTemplate.update("INSERT INTO Shelter (name, email, phone_number, location) VALUES (?, ?, ?, ?)",
                     shelter.getName(), shelter.getEmail(), shelter.getPhone_number(), shelter.getLocation());
         } catch (DataIntegrityViolationException e) {
             // Handle unique constraint violation (e.g., display a message or log the error)
@@ -34,8 +34,7 @@ public class shelterRepository {
                                 resultSet.getString("name"),
                                 resultSet.getString("email"),
                                 resultSet.getString("phone_number"),
-                                resultSet.getString("location"),
-                                resultSet.getInt("managerId"))
+                                resultSet.getString("location"))
         );
     }
 
@@ -48,8 +47,7 @@ public class shelterRepository {
                                     resultSet.getString("name"),
                                     resultSet.getString("email"),
                                     resultSet.getString("phone_number"),
-                                    resultSet.getString("location"),
-                                    resultSet.getInt("managerId"))
+                                    resultSet.getString("location"))
             );
         } catch (EmptyResultDataAccessException e) {
             // Shelter with the given name not found
@@ -64,8 +62,7 @@ public class shelterRepository {
                                     resultSet.getString("name"),
                                     resultSet.getString("email"),
                                     resultSet.getString("phone_number"),
-                                    resultSet.getString("location"),
-                                    resultSet.getInt("managerId"))
+                                    resultSet.getString("location"))
             );
         } catch (EmptyResultDataAccessException e) {
             // Shelter with the given id not found
