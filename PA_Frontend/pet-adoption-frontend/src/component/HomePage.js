@@ -83,7 +83,7 @@ const HomePage = () => {
             </Button>
           ))}
 
-          {!parsedAdopterData.role && (
+          {parsedAdopterData.role != 0 && parsedAdopterData.role != 1 && (
               <IconButton color="inherit" onClick={handleNotificationClick}>
                 <NotificationsNoneIcon />
             </IconButton>
