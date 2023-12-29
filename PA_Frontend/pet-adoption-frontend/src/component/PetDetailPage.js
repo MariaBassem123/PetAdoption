@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useLocation } from 'react-router-dom';
 
 const RootContainer = styled('div')({
     
@@ -62,22 +63,10 @@ const DescriptionTypography = styled(Typography)({
 });
 
 function PetDetailPage() {
-  const { id } = useParams();
-  console.log("id: "+id)
+  const location = useLocation();
+  const pet = location.state?.pet;
+  const id=useParams();
 
-  const petDetails = {
-    
-    name: 'Lulu Dog',
-    species: 'Dog',
-    breed: 'Unknown',
-    age: '2 years',
-    gender: 'Male',
-    healthStatus: 'Good',
-    behavior: 'Friendly',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    images: ['https://source.unsplash.com/random?dog'],
-  };
   const navigate = useNavigate();
   const handleButtonClick = (id) => {
     // Handle the click event and navigate to the PetDetailPage with the postId
@@ -91,21 +80,21 @@ function PetDetailPage() {
         <ContentContainer>
           <PetDetails>
             <Typography variant="h4" gutterBottom>
-              <BoldText>{petDetails.name}</BoldText>
+              <BoldText>{pet.pet.name}</BoldText>
             </Typography>
             <Typography variant="body1" paragraph>
-              <BoldText>Species:</BoldText> {petDetails.species} | <BoldText>Breed:</BoldText> {petDetails.breed} |{' '}
-              <BoldText>Age:</BoldText> {petDetails.age} | <BoldText>Gender:</BoldText> {petDetails.gender} |{' '}
-              <BoldText>Health Status:</BoldText> {petDetails.healthStatus}
+              <BoldText>Species:</BoldText> {pet.pet.species} | <BoldText>Breed:</BoldText> {pet.pet.breed} |{' '}
+              <BoldText>Age:</BoldText> {pet.pet.age} | <BoldText>Gender:</BoldText> {pet.pet.gender} |{' '}
+              <BoldText>Health Status:</BoldText> {pet.pet.healthStatus}
             </Typography>
             <Typography variant="body1" paragraph>
-              <BoldText>Behavior:</BoldText> {petDetails.behavior}
+              <BoldText>Behavior:</BoldText> {pet.pet.behavior}
             </Typography>
             <DescriptionTypography variant="body1" paragraph>
-              <BoldText>Description:</BoldText> {petDetails.description}
+              <BoldText>Description:</BoldText> {pet.pet.description}
             </DescriptionTypography>
           </PetDetails>
-          <PetImage component="img" alt={petDetails.name} height="140" image={petDetails.images[0]} />
+          <PetImage component="img" alt={pet.pet.name} height="140" image={pet.img[0]} />
         </ContentContainer>
           <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick(id)}>
             Adopt the Pet
