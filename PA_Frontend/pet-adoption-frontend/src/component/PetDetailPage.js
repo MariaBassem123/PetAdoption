@@ -94,7 +94,7 @@ function PetDetailPage() {
               <BoldText>Description:</BoldText> {pet.pet.description}
             </DescriptionTypography>
           </PetDetails>
-          <PetImage component="img" alt={pet.pet.name} height="140" image={pet.img[0]} />
+          {/* <PetImage component="img" alt={pet.pet.name} height="140" image={pet.img[0]} /> */}
         </ContentContainer>
           <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick(id)}>
             Adopt the Pet

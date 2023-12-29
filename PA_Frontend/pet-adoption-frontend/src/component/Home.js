@@ -20,7 +20,7 @@ export default function Home() {
   const decodedAdopterData = decodeURIComponent(adopterData);
   const parsedAdopterData = JSON.parse(atob(decodedAdopterData));
 
-  console.log("Data:", parsedAdopterData);
+  console.log("Data:", parsedAdopterData.role);
 
   const BaseUri = 'http://localhost:8088';
   const mainFeaturedPost = {
@@ -105,14 +105,13 @@ export default function Home() {
 
   const FeaturedPet = (props) => {
     const { pet } = props;
-    const handleImageClick = (postId) => {
-      navigate(`/pet/${postId}`);
+    const handleImageClick = (pet) => {
+      navigate(`/pet/${pet.pet.petId}`,{ state: { pet } });
     };
-    console.log(pet.img[0]);
 
     return (
       <Grid item xs={12} md={6}>
-        <CardActionArea onClick={() => handleImageClick(pet.pet.petId)} component="div">
+        <CardActionArea onClick={() => handleImageClick(pet)} component="div">
           <Card sx={{ display: 'flex' }}>
             <CardContent sx={{ flex: 1 }}>
               <Typography component="h2" variant="h5">
@@ -128,10 +127,10 @@ export default function Home() {
                 {pet.pet.description}
               </Typography>
             </CardContent>
-            <img
+            {/* <img // add the image and docs
               src={pet.img[0]}
               style={{ objectFit: 'cover', height: '250px', width: '250px', marginBottom: '12px' }}
-            />
+            /> */}
           </Card>
         </CardActionArea>
       </Grid>
@@ -274,14 +273,17 @@ export default function Home() {
         ))}
       </Grid>
 
+
+      {parsedAdopterData.role == 0 || parsedAdopterData.role == 1 && (
       <Button
         onClick={() => setModalOpen(true)}
         variant="contained"
         color="primary"
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        sx={{ position: 'fixed', bottom: 16, right: 70 }}
       >
         Add Pet
       </Button>
+     )}
 
       <AddPetModal />
 

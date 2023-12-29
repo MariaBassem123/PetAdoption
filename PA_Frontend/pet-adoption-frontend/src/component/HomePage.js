@@ -9,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Home from './Home';
 import StaffProfile from './staffProfile';
 import ShelterManagement from './Shelter_Management';
+import { useNavigate, useParams  } from 'react-router-dom';
 
 
 const manager = [
@@ -22,6 +23,7 @@ const staff = [
 const adaptor = [
   { title: 'Home', component: <Home /> },
 ];
+
 const defaultTheme = createTheme();
 
 const Header = (props) => {
@@ -62,15 +64,19 @@ const Header = (props) => {
   );
 };
 
-const HomePage = ({ role = 'manger'}) => {
+const HomePage = () => {
+  const { adopterData } = useParams();
+  const decodedAdopterData = decodeURIComponent(adopterData);
+  const parsedAdopterData = JSON.parse(atob(decodedAdopterData));
+
+  console.log("Data:", parsedAdopterData.role);
   let sections;
-  if (role === 'manger') {
-    sections = manager;
-  } else if (role === 'staff') {
-    sections = staff;
-  } else {
-    sections = adaptor;
-  }
+    if(parsedAdopterData.role == 0)  sections = staff;
+    if(parsedAdopterData.role == 1)  sections = manager;
+    else {
+      sections = adaptor;
+    }
+
 
   const [selectedSection, setSelectedSection] = useState(0);
 
