@@ -13,8 +13,26 @@ class signInService {
         });
     }
 
+    getStaff(email, password){
+        return axios.get(`${STAFF_SIGNIN_BASE_URL}/getStaffByEmail`, {
+            params: {
+                email: email,
+                password: password,
+            }
+        });
+    }
+
     checkAdopter(email, password) {
         return axios.get(`${ADOPTER_SIGNIN_BASE_URL}/checkAdopter`, {
+            params: {
+                email: email,
+                password: password,
+            }
+        });
+    }
+
+    getAdopter(email, password){
+        return axios.get(`${ADOPTER_SIGNIN_BASE_URL}/getAdopterByEmail`, {
             params: {
                 email: email,
                 password: password,

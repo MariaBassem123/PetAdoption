@@ -10,6 +10,7 @@ import Home from './Home';
 import StaffProfile from './staffProfile';
 import ShelterManagement from './Shelter_Management';
 
+
 const manager = [
   { title: 'Home', component: <Home /> },
   { title: 'Shelter Management', component: <ShelterManagement /> }, 

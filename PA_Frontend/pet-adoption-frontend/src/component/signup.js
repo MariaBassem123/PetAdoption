@@ -12,6 +12,9 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link as RouterLink } from 'react-router-dom';
+import signInService from '../services/signInService';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
@@ -19,6 +22,7 @@ export default function SignUpSide() {
   const BaseUri = 'http://localhost:8088'
   const [selectedRole, setSelectedRole] = useState('');
   const [showShelterInput, setShowShelterInput] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,6 +62,12 @@ export default function SignUpSide() {
         
         if((await response).ok){
             alert('Welcome '+ user.username + '! Horray!!')
+            const Staff = await signInService.getStaff(data.get('email'), data.get('password'));
+            console.log(Staff.data)
+            //navigate(`/home/${encodeURIComponent(Staff.data)}`);
+            const staffDataString = btoa(JSON.stringify(Staff.data));
+            navigate(`/home/${encodeURIComponent(staffDataString)}`);
+ 
         } else {
             alert("Wrong info.")
         }
@@ -77,7 +87,13 @@ export default function SignUpSide() {
       
       if((await response).ok){
           alert('Welcome  '+ user.username + '! Horray!!')
-      } else {
+          const Adopter = await signInService.getAdopter(data.get('email'), data.get('password'));
+          console.log(Adopter.data)
+          //navigate(`/home/${encodeURIComponent(Adopter.data)}`);
+          const adopterDataString = btoa(JSON.stringify(Adopter.data));
+          navigate(`/home/${encodeURIComponent(adopterDataString)}`);
+
+        } else {
           alert("Wrong info.")
       }
   }
@@ -275,9 +291,9 @@ export default function SignUpSide() {
                 <Grid item xs>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Already have an account? Sign In"}
-                  </Link>
+                <RouterLink to="/signin" variant="body2">
+                  Already have an account? Sign In
+                </RouterLink>
                 </Grid>
               </Grid>
             </Box>

@@ -14,6 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import signInService from '../services/signInService';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
+import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -21,6 +23,7 @@ const defaultTheme = createTheme();
 
 export default function SignInSide() {
   const [selectedRole, setSelectedRole] = useState('');
+  const navigate = useNavigate();
   
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
@@ -44,20 +47,41 @@ export default function SignInSide() {
     }
     try {
       if (selectedRole === 'adopter') {
+
         console.log("In adopter signin");
         const response = await signInService.checkAdopter(data.get('email'), data.get('password'));
         console.log('Sign-in response:', response.data);
+
         if(response.data === 'ADOPTER_FOUND_CORRECT_PASSWORD'){
           alert('Welcome '+ data.get('email') + '! Horray!!')
+          const Adopter = await signInService.getAdopter(data.get('email'), data.get('password'));
+          console.log(Adopter.data)
+
+          //navigate(`/home/${encodeURIComponent(JSON.stringify(Adopter.data))}`);
+          //navigate(`/home/${encodeURIComponent(Adopter.data)}`);
+          const adopterDataString = btoa(JSON.stringify(Adopter.data));
+          navigate(`/home/${encodeURIComponent(adopterDataString)}`);
+
         } else{
           alert("Email not found or incorrect password!")
         }
       } else if (selectedRole === 'staff') {
+
         console.log("In staff signin");
+        
         const response = await signInService.checkStaff(data.get('email'), data.get('password'));
         console.log('Sign-in response:', response.data);
+
         if(response.data === 'STAFF_FOUND_CORRECT_PASSWORD'){
+
           alert('Welcome '+ data.get('email') + '! Horray!!')
+          const Staff = await signInService.getStaff(data.get('email'), data.get('password'));
+          console.log(Staff.data)
+          
+          //navigate(`/home/${encodeURIComponent(Staff.data)}`);
+          const staffDataString = btoa(JSON.stringify(Staff.data));
+          navigate(`/home/${encodeURIComponent(staffDataString)}`);
+
         } else{
           alert("Email not found or incorrect password!")
         }
@@ -156,9 +180,9 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
+                <RouterLink to="/" variant="body2">
+                  Don't have an account? Sign Up
+                </RouterLink>
                 </Grid>
               </Grid>
             </Box>

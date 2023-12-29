@@ -12,9 +12,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams  } from 'react-router-dom';
 
 export default function Home() {
+
+  const { adopterData } = useParams();
+  const decodedAdopterData = decodeURIComponent(adopterData);
+  const parsedAdopterData = JSON.parse(atob(decodedAdopterData));
+
+  console.log("Data:", parsedAdopterData);
+
   const BaseUri = 'http://localhost:8088';
   const mainFeaturedPost = {
     title: 'Title of a longer featured blog Pet',

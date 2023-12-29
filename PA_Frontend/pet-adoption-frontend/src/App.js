@@ -12,12 +12,15 @@ function App() {
       <Routes>
         <Route path="/" element={<SignUpSide />} />
         <Route path="/signin" element={<SignInSide />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/home/:adopterData" element={<HomePage />} />
         <Route path="/pet/:id" element={<PetDetailPage />} />
         <Route path="/form/:id" element={<AdoptionForm />} />
+        <Route path="/signin" element={<SignInSide/>} />
       </Routes>
     </Router>
   );
 }
 
+
 export default App;
+
