@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class DocumentRepository {
 
@@ -18,4 +20,16 @@ public class DocumentRepository {
                 document.getType(), document.getAttachment());
 
     }
+
+    public List<Document> findImgById(int petId, int shelterId) {
+        String sql = "SELECT * FROM document WHERE petId = ? AND shelterId = ? AND type = 'img'";
+
+        return jdbcTemplate.query(sql, new Object[]{petId, shelterId}, (resultSet, rowNum) ->
+                new Document(resultSet.getInt("documentId"),
+                        resultSet.getInt("petId"),
+                        resultSet.getInt("shelterId"),
+                        resultSet.getString("type"),
+                        resultSet.getBytes("attachment")));
+    }
+
 }

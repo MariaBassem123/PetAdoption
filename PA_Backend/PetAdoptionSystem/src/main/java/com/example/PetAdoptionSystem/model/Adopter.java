@@ -62,7 +62,7 @@ public class Adopter {
     }
 }
 
-//    CREATE TABLE Adopters (
+//    CREATE TABLE Adopter (
 //      adopterId INT PRIMARY KEY AUTO_INCREMENT,
 //      name VARCHAR(50) NOT NULL,
 //      email VARCHAR(80) NOT NULL unique,

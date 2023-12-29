@@ -47,6 +47,6 @@ public class Notification {
 //        adopterId INT,
 //        description VARCHAR(255),
 //    status BOOLEAN NOT NULL,
-//    FOREIGN KEY (adopterId) REFERENCES Adopters(adopterId) on delete cascade on update cascade,
+//    FOREIGN KEY (adopterId) REFERENCES Adopter(adopterId) on delete cascade on update cascade,
 //        primary key(notificationId, adopterId)
 //        );
