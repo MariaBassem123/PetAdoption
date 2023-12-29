@@ -10,6 +10,12 @@ import Home from './Home';
 import StaffProfile from './staffProfile';
 import ShelterManagement from './Shelter_Management';
 import { useNavigate, useParams  } from 'react-router-dom';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 
 const HomePage = () => {
@@ -33,7 +39,16 @@ const HomePage = () => {
   
   const Header = (props) => {
     const { sections, title, selectedSection, setSelectedSection } = props;
-  
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+    
+    const handleNotificationClick = () => {
+      setIsNotificationOpen(true);
+    };
+
+    const handleNotificationClose = () => {
+      setIsNotificationOpen(false);
+    };
+    console.log("parseAdopter" , parsedAdopterData.role)
     return (
       <React.Fragment>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -47,6 +62,7 @@ const HomePage = () => {
           >
             {title}
           </Typography>
+          
         </Toolbar>
         <Toolbar
           component="nav"
@@ -64,7 +80,22 @@ const HomePage = () => {
               {section.title}
             </Button>
           ))}
+
+          {!parsedAdopterData.role && (
+              <IconButton color="inherit" onClick={handleNotificationClick}>
+                <NotificationsNoneIcon />
+            </IconButton>
+          )}
         </Toolbar>
+        <Dialog open={isNotificationOpen} onClose={handleNotificationClose}>
+        <DialogTitle>Notifications</DialogTitle>
+        <DialogContent>
+          <Typography>This is a cute notification!</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleNotificationClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
       </React.Fragment>
     );
   };
