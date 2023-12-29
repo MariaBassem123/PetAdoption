@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -8,25 +8,53 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import Divider from '@mui/material/Divider';
+import axios from 'axios';
+import { useNavigate, useParams  } from 'react-router-dom';
 
-export default function ShelterManagement() {
-  const [shelterDetails, setShelterDetails] = useState({
-    shelterId: '56789',
-    name: 'Example Shelter',
-    email: 'shelter@example.com',
-    phone_number: '555-555-5555',
-    location: '123 Main Street, Cityville',
-  });
+export default function ShelterManagement( {user} ) {
+  const MANAGE_SHELTER_URL = 'http://localhost:8088/manageShelter';
+  let shelterId = user.shelterId; // user.shelterId
+  const [staffMembers, setStaffMembers] = useState([]);
+  const [shelterDetails, setShelterDetails] = useState('');
 
-  const [staffMembers, setStaffMembers] = useState([
-    { staffId: 1, name: 'John Doe', email: 'john@example.com', phone_number: '555-1234' },
-    { staffId: 2, name: 'Jane Smith', email: 'jane@example.com', phone_number: '555-5678' },
-    { staffId: 3, name: 'Another Staff', email: 'another@example.com', phone_number: '555-4321' },
-    { staffId: 4, name: 'Another Staff', email: 'another@example.com', phone_number: '555-4321' },
-    { staffId: 5, name: 'Another Staff', email: 'another@example.com', phone_number: '555-4321' },
+  useEffect(() => {
+    const fetchShelterDetails = async () => {
+      try {
+        const shelterData = await getShelterByShelterId(shelterId);
+        setShelterDetails(shelterData);
 
-    // Add more staff members as needed
-  ]);
+        // Call the function to fetch staff members
+        const staffData = await fetchStaffMembers(shelterId);
+        // console.log("staff members ", staffMembers);
+      } catch (error) {
+        console.error('Error fetching shelter details:', error);
+        // Handle error as needed
+      }
+    };
+
+    // Call the function to fetch shelter details
+    fetchShelterDetails();
+  }, [shelterId]);
+  const fetchStaffMembers = async (shelterId) => {
+    try {
+      const response = await axios.get(`${MANAGE_SHELTER_URL}/getAllStaffs/${shelterId}`);
+      setStaffMembers(response.data);
+    } catch (error) {
+      console.error('Error fetching staff members:', error);
+      // Handle error as needed
+    }
+  };
+
+  const getShelterByShelterId = async (shelterId) => {
+    try {
+      const response = await axios.get(`${MANAGE_SHELTER_URL}/getShelter/${shelterId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching shelter:', error);
+      throw error; // You can handle the error based on your application's needs
+    }
+  };
+  
 
   const handleShelterDetailsChange = (field, value) => {
     setShelterDetails((prevDetails) => ({
@@ -38,7 +66,60 @@ export default function ShelterManagement() {
   const handleSubmit = () => {
     console.log('Submitting Shelter Details:', shelterDetails);
     // Implement logic to save shelter details to a backend API or perform necessary actions
+    // Use Axios to send a PUT request to your backend
+    // update email
+
+    axios.put(`${MANAGE_SHELTER_URL}/updateShelterEmail/${shelterDetails.shelterId}`, null, {
+      params: {
+        newEmail: shelterDetails.email,
+      }
+    })
+      .then((response) => {
+        console.log('Update email successful:', response.data);
+        // You can handle success, update UI, etc.
+      })
+      .catch((error) => {
+        console.error('Error updating shelter email:', error);
+        // Handle error, show error message, etc.
+      });
+    
+   
+// ------------------- Separator ----------------------------------
+    // update phone number
+    console.log(shelterDetails.phone_number);
+    axios.put(`${MANAGE_SHELTER_URL}/updateShelterPhoneNumber/${shelterDetails.shelterId}`, null, {
+    params: {
+      newPhoneNumber: shelterDetails.phone_number,
+    }
+  })
+    .then((response) => {
+      console.log('Update phone number successful:', response.data);
+      // You can handle success, update UI, etc.
+    })
+    .catch((error) => {
+      console.error('Error updating shelter email:', error);
+      // Handle error, show error message, etc.
+    });
+
+  //   // ------------------- Separator ----------------------------------
+  //   // update location
+    console.log(shelterDetails.location);
+    axios.put(`${MANAGE_SHELTER_URL}/updateShelterLocation/${shelterDetails.shelterId}`, null, {
+    params: {
+      newLocation: shelterDetails.location,
+    }
+  })
+    .then((response) => {
+      console.log('Update location successful:', response.data);
+      // You can handle success, update UI, etc.
+    })
+    .catch((error) => {
+      console.error('Error updating shelter email:', error);
+      // Handle error, show error message, etc.
+    });
   };
+
+
 
   return (
     <Container component="main" maxWidth="md" sx={{ position: 'relative', overflow: 'hidden', minHeight: '70vh' }}>
@@ -76,41 +157,40 @@ export default function ShelterManagement() {
             <Typography variant="h6" gutterBottom>
               Shelter Details
             </Typography>
-
+            <Typography variant="subtitle2">Shelter ID</Typography>
             <TextField
-              label="Shelter ID"
               variant="outlined"
               fullWidth
               margin="normal"
               value={shelterDetails.shelterId}
               onChange={(e) => handleShelterDetailsChange('shelterId', e.target.value)}
             />
+            <Typography variant="subtitle2">Shelter Name</Typography>
             <TextField
-              label="Name"
               variant="outlined"
               fullWidth
               margin="normal"
               value={shelterDetails.name}
               onChange={(e) => handleShelterDetailsChange('name', e.target.value)}
             />
+            <Typography variant="subtitle2">Shelter Email</Typography>
             <TextField
-              label="Email"
               variant="outlined"
               fullWidth
               margin="normal"
               value={shelterDetails.email}
               onChange={(e) => handleShelterDetailsChange('email', e.target.value)}
             />
+            <Typography variant="subtitle2">Shelter Phone Number</Typography>
             <TextField
-              label="Phone Number"
               variant="outlined"
               fullWidth
               margin="normal"
               value={shelterDetails.phone_number}
               onChange={(e) => handleShelterDetailsChange('phone_number', e.target.value)}
             />
+            <Typography variant="subtitle2">Shelter Location</Typography>
             <TextField
-              label="Location"
               variant="outlined"
               fullWidth
               margin="normal"
