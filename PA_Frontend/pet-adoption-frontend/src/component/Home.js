@@ -7,8 +7,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActionArea from '@mui/material/CardActionArea';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import { useNavigate } from 'react-router-dom';
-import CardMedia from '@mui/material/CardMedia';
 
 export default function Home() {
   const BaseUri = 'http://localhost:8088';
@@ -21,6 +25,7 @@ export default function Home() {
   };
 
   const [featuredPests, setFeaturedPests] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const getFeaturedPests = async () => {
@@ -46,7 +51,6 @@ export default function Home() {
     const { post } = props;
 
     return (
-
       <Paper
         sx={{
           position: 'relative',
@@ -92,8 +96,6 @@ export default function Home() {
     );
   };
 
-
-
   const FeaturedPet = (props) => {
     const { pet } = props;
     const handleImageClick = (postId) => {
@@ -129,6 +131,124 @@ export default function Home() {
     );
   };
 
+  const AddPetModal = () => {
+    const [petInfo, setPetInfo] = useState({
+      name: '',
+      species: '',
+      breed: '',
+      age: '',
+      gender: '',
+      healthStatus: '',
+      behavior: '',
+      description: '',
+      images: [],
+      documents: [],
+    });
+
+    const handleInputChange = (field) => (event) => {
+      setPetInfo({ ...petInfo, [field]: event.target.value });
+    };
+
+    const handleFileChange = (field) => (event) => {
+      const files = event.target.files;
+      setPetInfo({ ...petInfo, [field]: files });
+    };
+
+    const handleSubmit = () => {
+      console.log('Pet Information:', petInfo);
+      setModalOpen(false);
+    };
+
+    return (
+      <Dialog open={isModalOpen} onClose={() => setModalOpen(false)}>
+        <DialogTitle>Add a New Pet</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.name}
+            onChange={handleInputChange('name')}
+          />
+          <TextField
+            label="Species"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.species}
+            onChange={handleInputChange('species')}
+          />
+          <TextField
+            label="Breed"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.breed}
+            onChange={handleInputChange('breed')}
+          />
+          <TextField
+            label="Age"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.age}
+            onChange={handleInputChange('age')}
+          />
+          <TextField
+            label="Gender"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.gender}
+            onChange={handleInputChange('gender')}
+          />
+          <TextField
+            label="Health Status"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.healthStatus}
+            onChange={handleInputChange('healthStatus')}
+          />
+          <TextField
+            label="Behavior"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={petInfo.behavior}
+            onChange={handleInputChange('behavior')}
+          />
+          <TextField
+            label="Description"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            margin="normal"
+            value={petInfo.description}
+            onChange={handleInputChange('description')}
+          />
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ marginRight: '8px' }}>Images:</label>
+            <input type="file" onChange={handleFileChange('images')} accept="image/*" multiple />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ marginRight: '8px' }}>Documents:</label>
+            <input type="file" onChange={handleFileChange('documents')} multiple />
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setModalOpen(false)}>Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            Add Pet
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   return (
     <main>
       <MainFeaturedPost post={mainFeaturedPost} />
@@ -146,6 +266,17 @@ export default function Home() {
           <FeaturedPet key={pet.pet.petId} pet={pet} />
         ))}
       </Grid>
+
+      <Button
+        onClick={() => setModalOpen(true)}
+        variant="contained"
+        color="primary"
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+      >
+        Add Pet
+      </Button>
+
+      <AddPetModal />
 
       <hr style={{ margin: '20px 0', borderTop: '1px solid #ccc' }} />
     </main>
