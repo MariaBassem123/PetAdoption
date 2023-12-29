@@ -21,8 +21,8 @@ public class PetController {
     @PostMapping("/save")
     public ResponseEntity<String> savePet(@RequestBody Pet pet) {
         try {
-            petService.savePet(pet);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Pet saved successfully");
+            long petId = petService.savePet(pet);
+            return ResponseEntity.status(HttpStatus.CREATED).body(String.valueOf(petId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving pet");
         }

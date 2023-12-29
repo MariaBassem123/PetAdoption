@@ -1,10 +1,14 @@
 package com.example.PetAdoptionSystem.repository;
 
-import com.example.PetAdoptionSystem.model.Adopter;
 import com.example.PetAdoptionSystem.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
+import java.sql.*;
 import java.util.List;
 
 @Repository
@@ -13,11 +17,31 @@ public class PetRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void savePet(Pet pet){
-        String sql = "INSERT INTO pet (shelterId, name, birthDate, gender, species, breed, description, behaviour, healthStatus) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, pet.getShelterId(), pet.getName(), pet.getBirthDate(), pet.getGender(),
-                pet.getSpecies(), pet.getBreed(), pet.getDescription(), pet.getBehaviour(), pet.getHealthStatus());
+    public Long savePet(Pet pet) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                String sql = "INSERT INTO pet (shelterId, name, birthDate, gender, species, breed, description, behaviour, healthStatus) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setLong(1, pet.getShelterId());
+                ps.setString(2, pet.getName());
+                ps.setDate(3, pet.getBirthDate());
+                ps.setBoolean(4, pet.getGender());
+                ps.setString(5, pet.getSpecies());
+                ps.setString(6, pet.getBreed());
+                ps.setString(7, pet.getDescription());
+                ps.setString(8, pet.getBehaviour());
+                ps.setString(9, pet.getHealthStatus());
+
+                return ps;
+            }
+        }, keyHolder);
+        System.out.println(keyHolder.getKey().longValue());
+        return keyHolder.getKey().longValue();
     }
 
     public List<Pet> getAllPets() {

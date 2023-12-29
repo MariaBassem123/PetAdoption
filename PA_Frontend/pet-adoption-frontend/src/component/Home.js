@@ -13,6 +13,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useNavigate, useParams  } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function Home() {
 
@@ -20,7 +21,7 @@ export default function Home() {
   const decodedAdopterData = decodeURIComponent(adopterData);
   const parsedAdopterData = JSON.parse(atob(decodedAdopterData));
 
-  console.log("Data:", parsedAdopterData.role);
+  console.log("Data:", parsedAdopterData);
 
   const BaseUri = 'http://localhost:8088';
   const mainFeaturedPost = {
@@ -102,13 +103,13 @@ export default function Home() {
       </Paper>
     );
   };
-
+  
   const FeaturedPet = (props) => {
     const { pet } = props;
     const handleImageClick = (pet) => {
-      navigate(`/pet/${pet.pet.petId}`,{ state: { pet } });
+      navigate(`/pet/${pet.pet.petId}`, { state: { pet } });
     };
-
+  
     return (
       <Grid item xs={12} md={6}>
         <CardActionArea onClick={() => handleImageClick(pet)} component="div">
@@ -127,16 +128,19 @@ export default function Home() {
                 {pet.pet.description}
               </Typography>
             </CardContent>
-            {/* <img // add the image and docs
-              src={pet.img[0]}
-              style={{ objectFit: 'cover', height: '250px', width: '250px', marginBottom: '12px' }}
-            /> */}
+            {pet.img && pet.img.length > 0 && (
+              <img
+                src={pet.img[0]} // Assuming the first image is the main image
+                alt={pet.pet.name}
+                style={{ objectFit: 'cover', height: '250px', width: '250px', marginBottom: '12px' }}
+              />
+            )}
           </Card>
         </CardActionArea>
       </Grid>
     );
   };
-
+  
   const AddPetModal = () => {
     const [petInfo, setPetInfo] = useState({
       name: '',
@@ -147,23 +151,96 @@ export default function Home() {
       healthStatus: '',
       behavior: '',
       description: '',
-      images: [],
       documents: [],
     });
 
+              
     const handleInputChange = (field) => (event) => {
       setPetInfo({ ...petInfo, [field]: event.target.value });
     };
 
     const handleFileChange = (field) => (event) => {
       const files = event.target.files;
-      setPetInfo({ ...petInfo, [field]: files });
+  
+      // Check if files are present
+      if (files.length > 0) {
+      setPetInfo({ ...petInfo, documents: [...petInfo.documents, ...files] });
+      }
     };
+    
+    
+    const handleSubmit = async () => {
+      try {
+        // Step 1: Add the pet
+        const petInfoObject = {
+          shelterId: parsedAdopterData.shelterId,
+          name: petInfo.name,
+          birthDate: petInfo.age,
+          species: petInfo.species,
+          breed: petInfo.breed,
+          gender: petInfo.gender,
+          healthStatus: petInfo.healthStatus,
+          behavior: petInfo.behavior,
+          description: petInfo.description,
+        };
+    
+        const petInfoJSON = JSON.stringify(petInfoObject);
+    
+        const response = await fetch(`${BaseUri}/pet/save`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: petInfoJSON,
+        });
+    
+        if (!response.ok) {
+          console.error('Failed to add pet:', response.statusText);
+          return;
+        }
+    
+        const responseBody = await response.json();
+        const petId = parseInt(responseBody);
+        console.log('Pet ID:', petId);
 
-    const handleSubmit = () => {
-      console.log('Pet Information:', petInfo);
-      setModalOpen(false);
-    };
+        // Step 2: Upload documents
+        if (Array.isArray(petInfo.documents)) {
+          const documentUploadPromises = petInfo.documents.map(async (document) => {
+            try {
+              console.log(document);
+              const formData = new FormData();
+              formData.append('attachment', document)
+              formData.append('petId', petId);
+              formData.append('type', document.type);
+              formData.append('shelterId', parsedAdopterData.shelterId);
+
+              console.log(formData);
+
+              const documentUploadResponse = await fetch(`${BaseUri}/document/save`, {
+                method: 'POST',
+                body: formData,
+              });
+
+              if (documentUploadResponse.ok) {
+                console.log('Document uploaded successfully!');
+              } else {
+                console.error('Failed to upload document:', documentUploadResponse.statusText);
+              }
+            } catch (documentError) {
+              console.error('Error uploading document:', documentError.message);
+            }
+          });
+
+          await Promise.all(documentUploadPromises);
+        }
+
+        setModalOpen(false);
+        getFeaturedPests();
+        } catch (error) {
+        console.error('Error adding pet:', error.message);
+        }
+        };
+    
 
     return (
       <Dialog open={isModalOpen} onClose={() => setModalOpen(false)}>
@@ -194,21 +271,29 @@ export default function Home() {
             onChange={handleInputChange('breed')}
           />
           <TextField
-            label="Age"
+            label="Birth Date"
             variant="outlined"
             fullWidth
             margin="normal"
+            type="date"  
+            InputLabelProps={{
+              shrink: true,
+            }}
             value={petInfo.age}
             onChange={handleInputChange('age')}
           />
           <TextField
+            select
             label="Gender"
             variant="outlined"
             fullWidth
             margin="normal"
             value={petInfo.gender}
             onChange={handleInputChange('gender')}
-          />
+          >
+            <MenuItem value={true}>Girl</MenuItem>
+            <MenuItem value={false}>Boy</MenuItem>
+          </TextField>
           <TextField
             label="Health Status"
             variant="outlined"
@@ -236,12 +321,7 @@ export default function Home() {
             onChange={handleInputChange('description')}
           />
           <div style={{ marginBottom: '16px' }}>
-            <label style={{ marginRight: '8px' }}>Images:</label>
-            <input type="file" onChange={handleFileChange('images')} accept="image/*" multiple />
-          </div>
-
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ marginRight: '8px' }}>Documents:</label>
+            <label style={{ marginRight: '8px' }}>Documents/Images:</label>
             <input type="file" onChange={handleFileChange('documents')} multiple />
           </div>
         </DialogContent>
@@ -274,12 +354,12 @@ export default function Home() {
       </Grid>
 
 
-      {parsedAdopterData.role == 0 || parsedAdopterData.role == 1 && (
+      {(parsedAdopterData.role == 0) || (parsedAdopterData.role == 1) && (
       <Button
         onClick={() => setModalOpen(true)}
         variant="contained"
         color="primary"
-        sx={{ position: 'fixed', bottom: 16, right: 70 }}
+        sx={{ position: 'fixed', bottom: 16, right: 200 }}
       >
         Add Pet
       </Button>
