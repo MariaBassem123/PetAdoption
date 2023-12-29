@@ -101,9 +101,11 @@ export default function SignUpSide() {
   };
 
   const handleRoleChange = (event) => {
-    setSelectedRole(event.target.value);
-    setShowShelterInput(event.target.value === 'staff');
+    const selectedRole = event.target.value;
+    setSelectedRole(selectedRole);
+    setShowShelterInput(selectedRole === 'manager' || selectedRole === 'staff');
   };
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -195,18 +197,19 @@ export default function SignUpSide() {
                 id="confirmPassword"
                 autoComplete="new-password"
               />
-              <RadioGroup
+                            <RadioGroup
                 aria-label="role"
                 name="role"
                 value={selectedRole}
-                onChange={handleRoleChange}
-                required  // Add the required attribute
+                onChange={(event) => handleRoleChange(event)} // Fixed the onChange prop
+                required // Add the required attribute
                 sx={{ gap: 2, flexWrap: 'wrap', flexDirection: 'row' }}
               >
+                <FormControlLabel value="manager" control={<Radio />} label="Manager" />
                 <FormControlLabel value="staff" control={<Radio />} label="Staff" />
                 <FormControlLabel value="adopter" control={<Radio />} label="Adopter" />
               </RadioGroup>
-              {/* Conditionally render shelter ID input based on selected role */}
+
               {selectedRole === 'staff' && showShelterInput && (
                 <TextField
                   margin="normal"
@@ -217,7 +220,49 @@ export default function SignUpSide() {
                   name="shelterId"
                   autoComplete="shelterId"
                 />
-              )}      
+              )}
+
+              {selectedRole === 'manager' && showShelterInput && (
+                <>
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="Shelter Name"
+                    name="name"
+                    autoComplete="name"
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="location"
+                    label="Shelter Location"
+                    name="location"
+                    autoComplete="location"
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="phone"
+                    label="Shelter Phone Number"
+                    name="phone"
+                    autoComplete="phone"
+                  />
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Shelter Email"
+                    name="email"
+                    autoComplete="email"
+                  />
+                </>
+              )}
+     
               <Button
                 type="submit"
                 fullWidth

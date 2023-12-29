@@ -5,12 +5,13 @@ import SignUpSide from './component/signup';
 import HomePage from './component/HomePage';
 import PetDetailPage from './component/PetDetailPage';
 import AdoptionForm from './component/AdoptionForm';
-
+import SignInSide from './component/signin';
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<SignUpSide />} />
+        <Route path="/signin" element={<SignInSide />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/pet/:id" element={<PetDetailPage />} />
         <Route path="/form/:id" element={<AdoptionForm />} />

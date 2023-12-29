@@ -15,13 +15,12 @@ import signInService from '../services/signInService';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
   const [selectedRole, setSelectedRole] = useState('');
-  
+
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
     console.log(event.target.value);
@@ -130,16 +129,29 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              <RadioGroup
-                aria-label="role"
-                name="role"
-                value={selectedRole}
-                onChange={handleRoleChange}
-                sx={{ gap: 2, flexWrap: 'wrap', flexDirection: 'row' }}
-              >
-                <FormControlLabel value="staff" control={<Radio />} label="Staff" />
-                <FormControlLabel value="adopter" control={<Radio />} label="Adopter" />
-              </RadioGroup>
+                <RadioGroup
+                  aria-label="role"
+                  name="role"
+                  value={selectedRole}
+                  onChange={handleRoleChange}
+                  sx={{ gap: 2, flexWrap: 'wrap', flexDirection: 'row' }}
+                >
+                  <FormControlLabel value="manager" control={<Radio />} label="Manager" />
+                  <FormControlLabel value="staff" control={<Radio />} label="Staff" />
+                  <FormControlLabel value="adopter" control={<Radio />} label="Adopter" />
+                </RadioGroup>
+
+                { (selectedRole === 'staff' || selectedRole === 'manager') && setSelectedRole && (
+                  <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="shelterId"
+                    label="Shelter ID"
+                    name="shelterId"
+                    autoComplete="shelterId"
+                  />
+                )}
               
               <Button
                 type="submit"
