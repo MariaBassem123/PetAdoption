@@ -23,6 +23,14 @@ public class Document {
         this.attachment = attachment;
     }
 
+    public void setPetId(int petId) {
+        this.petId = petId;
+    }
+
+    public void setShelterId(int shelterId) {
+        this.shelterId = shelterId;
+    }
+
     public int getDocumentId() {
         return documentId;
     }

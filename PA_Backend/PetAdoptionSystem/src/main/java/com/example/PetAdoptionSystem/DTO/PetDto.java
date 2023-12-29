@@ -1,5 +1,6 @@
 package com.example.PetAdoptionSystem.DTO;
 
+import com.example.PetAdoptionSystem.model.Document;
 import com.example.PetAdoptionSystem.model.Pet;
 
 import javax.persistence.Lob;
@@ -7,23 +8,19 @@ import java.util.List;
 
 public class PetDto {
     private Pet pet;
-    @Lob
-    private List<byte[]> img;
+    private List<Document> documents;
 
-    public PetDto() {
-    }
-
-    public PetDto(Pet pet, List<byte[]> img) {
+    public PetDto(Pet pet, List<Document> documents) {
         this.pet = pet;
-        this.img = img;
+        this.documents = documents;
     }
 
     public Pet getPet() {
         return pet;
     }
 
-    public List<byte[]> getImg() {
-        return img;
+    public List<Document> getDocuments() {
+        return documents;
     }
-
 }
+

@@ -21,7 +21,7 @@ public class PetService {
     @Autowired
     private DocumentRepository documentRepository;
 
-    public void savePet(Pet pet){petRepository.savePet(pet);}
+    public long savePet(Pet pet){return petRepository.savePet(pet);}
 
     public List<Pet> getAllPets(){return petRepository.getAllPets();}
 
@@ -38,11 +38,8 @@ public class PetService {
             return new PetDto(pet, null);
         }
 
-        List<byte[]> imgList = documents.stream()
-                .map(Document::getAttachment)
-                .collect(Collectors.toList());
-
-        return new PetDto(pet, imgList);
+        return new PetDto(pet, documents);
     }
+
 
 }
