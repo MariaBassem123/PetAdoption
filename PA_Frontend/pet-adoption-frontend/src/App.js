@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<SignUpSide />} />
         <Route path="/signin" element={<SignInSide />} />
         <Route path="/home/:adopterData" element={<HomePage />} />
-        <Route path="/pet/:id" element={<PetDetailPage />} />
+        <Route path="/pet/:id/:id" element={<PetDetailPage />} />
         <Route path="/form/:id" element={<AdoptionForm />} />
         <Route path="/signin" element={<SignInSide/>} />
       </Routes>

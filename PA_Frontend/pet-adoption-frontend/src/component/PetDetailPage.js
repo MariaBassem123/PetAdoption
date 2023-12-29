@@ -8,6 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useLocation } from 'react-router-dom';
+import signInService from '../services/signInService';
 
 const RootContainer = styled('div')({
     
@@ -63,15 +64,55 @@ const DescriptionTypography = styled(Typography)({
 });
 
 function PetDetailPage() {
+
   const location = useLocation();
-  const pet = location.state?.pet;
-  const id=useParams();
+  const { user, pet } = location.state;
+
+  console.log('User:', user.adopterId);
+  console.log('Pet:', pet.pet.petId);
 
   const navigate = useNavigate();
-  const handleButtonClick = (id) => {
-    // Handle the click event and navigate to the PetDetailPage with the postId
-    navigate(`/form/${id}`);
-  };
+
+  const handleButtonClick = async () => {
+    try {
+
+        const petId = pet.pet.petId;
+        console.log(`petId: ${petId}`);
+
+        console.log("shelterId:", pet.pet.shelterId);
+
+        console.log('User:', user.adopterId);
+
+        const applicationData = {
+          petId: pet.pet.petId,
+          shelterId: pet.pet.shelterId, // Assuming shelterId is directly accessible in shelterId.data
+          adopterId: user.adopterId,
+          status: 0
+        };
+
+        const response = await fetch('http://localhost:8088/applications/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // If your backend expects credentials, include this line:
+          // 'Authorization': 'Bearer ' + yourToken,
+        },
+        body: JSON.stringify(applicationData),
+      });
+      if (response.ok) {
+        console.log('Application submitted successfully');
+        // Handle success, e.g., show a success message or navigate to a different page
+      } else {
+        console.error('Failed to submit application:', response.statusText);
+        // Handle error, e.g., show an error message to the user
+      }
+    } catch (error) {
+      console.error("Error fetching shelterId or submitting application:", error);
+    }
+
+
+
+};
 
   return (
     
@@ -96,7 +137,7 @@ function PetDetailPage() {
           </PetDetails>
           {/* <PetImage component="img" alt={pet.pet.name} height="140" image={pet.img[0]} /> */}
         </ContentContainer>
-          <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick(id)}>
+          <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick()}>
             Adopt the Pet
           </AdoptButton>
       </RootContainer>
