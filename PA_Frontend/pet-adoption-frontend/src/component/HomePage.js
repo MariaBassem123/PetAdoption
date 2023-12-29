@@ -16,6 +16,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import ApplicationList from './ApplicationList';
 
 
 const HomePage = () => {
@@ -30,6 +31,7 @@ const HomePage = () => {
   const staff = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
     { title: 'Profile', component: <StaffProfile user={parsedAdopterData}/> },
+    { title: 'Applications', component: <ApplicationList/> },
   ];
   const adaptor = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
@@ -102,11 +104,13 @@ const HomePage = () => {
   
   console.log("Data:", parsedAdopterData.role);
   let sections;
-    if(parsedAdopterData.role == 0)  sections = staff;
-    if(parsedAdopterData.role == 1)  sections = manager;
-    else {
-      sections = adaptor;
-    }
+  if(parsedAdopterData.role == 0)  {
+    sections = staff
+  }
+  else if(parsedAdopterData.role == 1)  {sections = manager}
+  else {
+    sections = adaptor
+  }
 
 
   const [selectedSection, setSelectedSection] = useState(0);

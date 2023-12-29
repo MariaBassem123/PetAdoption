@@ -48,6 +48,14 @@ class signInService {
             }
         });
     }
+
+    getShelterByID(id){
+        return axios.get(`${SHELTER_SIGNIN_BASE_URL}/getById`, {
+            params: {
+                id: id,
+            }
+        });
+    }
 }
 
 export default new signInService();
