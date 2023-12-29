@@ -1,22 +1,26 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button'; // Change Link to Button
+import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Home from './Home';
 import StaffProfile from './staffProfile';
-import Shelter_Management from './Shelter_Management';
+import ShelterManagement from './Shelter_Management';
 
-const sections = [
+const manager = [
+  { title: 'Home', component: <Home /> },
+  { title: 'Shelter Management', component: <ShelterManagement /> }, 
+];
+const staff = [
   { title: 'Home', component: <Home /> },
   { title: 'Profile', component: <StaffProfile /> },
-  { title: 'Shelter Management', component: <Shelter_Management /> }
 ];
-
-
+const adaptor = [
+  { title: 'Home', component: <Home /> },
+];
 const defaultTheme = createTheme();
 
 const Header = (props) => {
@@ -57,8 +61,17 @@ const Header = (props) => {
   );
 };
 
-export default function HomePage() {
-  const [selectedSection, setSelectedSection] = React.useState(0);
+const HomePage = ({ role = 'manger'}) => {
+  let sections;
+  if (role === 'manger') {
+    sections = manager;
+  } else if (role === 'staff') {
+    sections = staff;
+  } else {
+    sections = adaptor;
+  }
+
+  const [selectedSection, setSelectedSection] = useState(0);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -71,4 +84,6 @@ export default function HomePage() {
       </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default HomePage;

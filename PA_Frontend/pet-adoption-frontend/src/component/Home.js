@@ -15,7 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-export default function Home() {
+export default function Home({role = 'manger'}) {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -281,6 +281,7 @@ export default function Home() {
         ))}
       </Grid>
 
+      {role === 'staff' || role === 'manger' && (
       <Button
         onClick={() => setModalOpen(true)}
         variant="contained"
@@ -289,8 +290,9 @@ export default function Home() {
       >
         Add Pet
       </Button>
+     )}
 
-      <AddPetModal />
+     <AddPetModal />
 
       <hr style={{ margin: '20px 0', borderTop: '1px solid #ccc' }} />
     </main>
