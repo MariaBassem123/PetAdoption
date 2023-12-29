@@ -163,6 +163,9 @@ export default function ShelterManagement( {user} ) {
               fullWidth
               margin="normal"
               value={shelterDetails.shelterId}
+              InputProps={{
+                readOnly: true,
+              }}
               onChange={(e) => handleShelterDetailsChange('shelterId', e.target.value)}
             />
             <Typography variant="subtitle2" align='left'>Shelter Name</Typography>
@@ -170,8 +173,12 @@ export default function ShelterManagement( {user} ) {
               variant="outlined"
               fullWidth
               margin="normal"
+
               value={shelterDetails.name}
               onChange={(e) => handleShelterDetailsChange('name', e.target.value)}
+              InputProps={{
+                readOnly: true,
+              }}
             />
             <Typography variant="subtitle2" align='left'>Shelter Email</Typography>
             <TextField
@@ -192,7 +199,7 @@ export default function ShelterManagement( {user} ) {
             <Typography variant="subtitle2" align='left'>Shelter Location</Typography>
             <TextField
               variant="outlined"
-              fullWidth
+              fullWidthF
               margin="normal"
               value={shelterDetails.location}
               onChange={(e) => handleShelterDetailsChange('location', e.target.value)}
