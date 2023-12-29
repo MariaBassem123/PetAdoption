@@ -8,7 +8,7 @@ public class Document {
     private int petId;
     private int shelterId;
     private String type;
-
+    
     @Lob
     private byte[] attachment;
 
@@ -53,3 +53,15 @@ public class Document {
 
 
 }
+
+
+//    CREATE TABLE document (
+//        documentId int AUTO_INCREMENT,
+//        petId int,
+//        shelterId int,
+//        type varchar(50) NOT NULL,
+//    attachment blob NOT NULL,
+//    FOREIGN KEY (petId) REFERENCES pet(petId) ON DELETE CASCADE ON UPDATE CASCADE,
+//        FOREIGN KEY (shelterId) REFERENCES pet (shelterId) ON DELETE CASCADE ON UPDATE CASCADE,
+//        PRIMARY KEY (documentId,petId,shelterId)
+//        );
