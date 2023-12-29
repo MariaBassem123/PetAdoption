@@ -157,7 +157,7 @@ export default function ShelterManagement( {user} ) {
             <Typography variant="h6" gutterBottom>
               Shelter Details
             </Typography>
-            <Typography variant="subtitle2">Shelter ID</Typography>
+            <Typography variant="subtitle2" align='left'>Shelter ID</Typography>
             <TextField
               variant="outlined"
               fullWidth
@@ -165,7 +165,7 @@ export default function ShelterManagement( {user} ) {
               value={shelterDetails.shelterId}
               onChange={(e) => handleShelterDetailsChange('shelterId', e.target.value)}
             />
-            <Typography variant="subtitle2">Shelter Name</Typography>
+            <Typography variant="subtitle2" align='left'>Shelter Name</Typography>
             <TextField
               variant="outlined"
               fullWidth
@@ -173,7 +173,7 @@ export default function ShelterManagement( {user} ) {
               value={shelterDetails.name}
               onChange={(e) => handleShelterDetailsChange('name', e.target.value)}
             />
-            <Typography variant="subtitle2">Shelter Email</Typography>
+            <Typography variant="subtitle2" align='left'>Shelter Email</Typography>
             <TextField
               variant="outlined"
               fullWidth
@@ -181,7 +181,7 @@ export default function ShelterManagement( {user} ) {
               value={shelterDetails.email}
               onChange={(e) => handleShelterDetailsChange('email', e.target.value)}
             />
-            <Typography variant="subtitle2">Shelter Phone Number</Typography>
+            <Typography variant="subtitle2" align='left'>Shelter Phone Number</Typography>
             <TextField
               variant="outlined"
               fullWidth
@@ -189,7 +189,7 @@ export default function ShelterManagement( {user} ) {
               value={shelterDetails.phone_number}
               onChange={(e) => handleShelterDetailsChange('phone_number', e.target.value)}
             />
-            <Typography variant="subtitle2">Shelter Location</Typography>
+            <Typography variant="subtitle2" align='left'>Shelter Location</Typography>
             <TextField
               variant="outlined"
               fullWidth
