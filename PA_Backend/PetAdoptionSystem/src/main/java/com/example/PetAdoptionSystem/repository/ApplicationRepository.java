@@ -8,6 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static com.example.PetAdoptionSystem.Utils.Constants.APPROVED;
+import static com.example.PetAdoptionSystem.Utils.Constants.REJECTED;
+
 @Repository
 public class ApplicationRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -40,4 +44,27 @@ public class ApplicationRepository {
             throw new RuntimeException("Error retrieving Applications", e);
         }
     }
+
+    public List<Application> getAllByShelter(int shelterId) {
+        String sql = "SELECT * FROM Application WHERE shelterId = ? AND status= 0";
+        return jdbcTemplate.query(sql, new Object[]{shelterId}, (resultSet, rowNum) ->
+                new Application(
+                        resultSet.getInt("petId"),
+                        resultSet.getInt("shelterId"),
+                        resultSet.getInt("adopterId"),
+                        resultSet.getInt("status")
+                )
+        );
+    }
+
+    public void acceptApplication(int shelterId, int petId, int adopterId){
+        jdbcTemplate.update("UPDATE Application SET status = ? WHERE petId = ? AND shelterId = ? AND adopterId = ?",
+                APPROVED, petId, shelterId, adopterId);
+    }
+
+    public void rejectApplication(int shelterId, int petId, int adopterId){
+        jdbcTemplate.update("UPDATE Application SET status = ? WHERE petId = ? AND shelterId = ? AND adopterId = ?",
+                REJECTED, petId, shelterId, adopterId);
+    }
+
 }

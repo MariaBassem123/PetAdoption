@@ -32,7 +32,7 @@ const HomePage = () => {
   const staff = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
     { title: 'Profile', component: <StaffProfile user={parsedAdopterData}/> },
-    { title: 'Applications', component: <ApplicationList/> },
+    { title: 'Applications', component: <ApplicationList user={parsedAdopterData}/> },
   ];
   const adaptor = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
