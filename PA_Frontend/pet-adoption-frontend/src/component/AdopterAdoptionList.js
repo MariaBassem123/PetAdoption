@@ -59,14 +59,15 @@ const AdopterAdoptionList = ({ user }) => {
                     style={{ marginRight: '20px' }}
                     primary={
                       <Typography variant="subtitle1" color="primary">
-                        Adopter Details
+                        Shelter Details
                       </Typography>
                     }
                     secondary={
                       <React.Fragment>
-                        <Typography variant="body2">Name: {application.adopter_Name}</Typography>
-                        <Typography variant="body2">Email: {application.adopter_Email}</Typography>
-                        <Typography variant="body2">Phone: {application.adopter_Phone}</Typography>
+                        <Typography variant="body2">Name: {application.shelter.name}</Typography>
+                        <Typography variant="body2">Email: {application.shelter.email}</Typography>
+                        <Typography variant="body2">Phone: {application.shelter.phone_number}</Typography>
+                        <Typography variant="body2">Loction: {application.shelter.location}</Typography>
                       </React.Fragment>
                     }
                   />
