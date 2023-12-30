@@ -47,4 +47,14 @@ public class PetController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/getAllByShelter")
+    public ResponseEntity<List<PetDto>> getAllByShelter(@RequestParam int shelterID) {
+        try {
+            List<PetDto> pets = petService.getAllPetsWithImgByShelter(shelterID);
+            return ResponseEntity.ok(pets);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

@@ -41,6 +41,13 @@ public class PetService {
                 .collect(Collectors.toList());
     }
 
+    public List<PetDto> getAllPetsWithImgByShelter(int shelterID) {
+        List<Pet> pets = petRepository.getAllPetsByShelter(shelterID);
+        return pets.stream()
+                .map(this::convertToDTOWithImages)
+                .collect(Collectors.toList());
+    }
+
     public PetDto convertToDTOWithImages(Pet pet) {
         List<Document> documents = documentRepository.findImgById(pet.getPetId(), pet.getShelterId());
         List<String> imgDataUrls = new ArrayList<>();

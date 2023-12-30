@@ -83,6 +83,24 @@ public class PetRepository {
         );
     }
 
+    public List<Pet> getAllPetsByShelter(int shelterID){
+        String sql = "SELECT * FROM pet WHERE shelterId = ?";
+        return jdbcTemplate.query(sql, new Object[]{shelterID}, (resultSet, rowNum) ->
+                new Pet(
+                        resultSet.getInt("petId"),
+                        resultSet.getInt("shelterId"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("birthDate"),
+                        resultSet.getBoolean("gender"),
+                        resultSet.getString("species"),
+                        resultSet.getString("breed"),
+                        resultSet.getString("description"),
+                        resultSet.getString("behaviour"),
+                        resultSet.getString("healthStatus")
+                )
+        );
+    }
+
     public Pet getPetById(int petId) {
         String sql = "SELECT * FROM pet WHERE petId = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{petId}, (resultSet, rowNum) ->

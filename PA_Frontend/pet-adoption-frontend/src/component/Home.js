@@ -14,6 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useNavigate, useParams  } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
+import axios from 'axios';
 
 export default function Home({user}) {
   const BaseUri = 'http://localhost:8088';
@@ -67,24 +68,40 @@ export default function Home({user}) {
     console.log(event.target.value)
   };
   const getFeaturedPests = async () => {
-    try {
-      const response = await fetch(`${BaseUri}/pet/getAll`);
-      if (response.ok) {
-        const data = await response.json();
-        setAllPets(data); // Update the allPets state with the fetched data
-        console.log(data);
-        setFilteredPets(data);
-      } else {
-        console.error('Failed to fetch pets:', response.statusText);
+    console.log("role= "+user.role);
+    if(user.role===0 || user.role===1){
+      try {
+        const response = await axios.get(`${BaseUri}/pet/getAllByShelter`, {
+              params: {
+                shelterID: user.shelterId,
+              },
+            });
+        console.log(response.data);
+        setAllPets(response.data); 
+        setFilteredPets(response.data);
+      } catch (error) {
+        console.error('Error fetching pets:', error.message);
       }
-    } catch (error) {
-      console.error('Error fetching pets:', error.message);
-    }
+    }else{
+      try {
+        const response = await fetch(`${BaseUri}/pet/getAll`);
+        if (response.ok) {
+          const data = await response.json();
+          setAllPets(data); // Update the allPets state with the fetched data
+          console.log(data);
+          setFilteredPets(data);
+        } else {
+          console.error('Failed to fetch pets:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching pets:', error.message);
+      }
+  }
   };
 
   useEffect(() => {
     getFeaturedPests();
-  }, []);
+  }, [user]);
 
   const MainFeaturedPost = (props) => {
     const { post } = props;
