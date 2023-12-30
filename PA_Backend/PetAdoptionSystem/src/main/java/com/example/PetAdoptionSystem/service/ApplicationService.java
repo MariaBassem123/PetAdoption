@@ -50,6 +50,7 @@ public class ApplicationService {
 
     public void acceptApplication(int shelterId, int petId, int adopterId){
         applicationRepository.acceptApplication(shelterId,adopterId,petId);
+        applicationRepository.rejectAllOtherApplications(shelterId,petId);
     }
 
     public void rejectApplication(int shelterId, int petId, int adopterId){

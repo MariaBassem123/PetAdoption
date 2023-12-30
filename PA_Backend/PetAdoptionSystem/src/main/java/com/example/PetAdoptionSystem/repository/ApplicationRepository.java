@@ -67,4 +67,17 @@ public class ApplicationRepository {
                 REJECTED, petId, shelterId, adopterId);
     }
 
+    public void rejectAllOtherApplications(int shelterId, int petId){
+        System.out.println("in reject all");
+        System.out.println("shelterId: " + shelterId);
+        System.out.println("petId: " + petId);
+        System.out.println("REJECTED: " + REJECTED);
+
+        jdbcTemplate.update("UPDATE Application SET status = ? WHERE petId = ? AND shelterId = ? AND status = 0",
+                REJECTED, petId, shelterId);
+    }
+
+
+
+
 }
