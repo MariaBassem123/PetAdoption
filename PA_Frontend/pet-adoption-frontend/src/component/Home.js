@@ -100,6 +100,9 @@ export default function Home({user}) {
   const FeaturedPet = (props) => {
     const { pet } = props;
     const handleImageClick = (pet) => {
+      if(user.role == 0 || user.role == 1)
+      handleUpdateClick(pet)
+      else
       navigate(`/pet/${user.adopterId}/${pet.pet.petId}`, { state: { user, pet } });
     };
   
@@ -335,6 +338,172 @@ export default function Home({user}) {
       </Dialog>
     );
   };
+  const [selectedPet, setSelectedPet] = useState(null);
+  const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
+
+  const handleUpdateClick = (pet) => {
+    setSelectedPet(pet);
+    setUpdateModalOpen(true);
+  };
+
+  const UpdatePetModal = () => {
+    const [updatedPetInfo, setUpdatedPetInfo] = useState({
+      name: selectedPet ? selectedPet.pet.name : '',
+      species: selectedPet ? selectedPet.pet.species : '',
+      breed: selectedPet ? selectedPet.pet.breed : '',
+      age: selectedPet ? selectedPet.pet.birthDate : '',
+      gender: selectedPet ? selectedPet.pet.gender : '',
+      healthStatus: selectedPet ? selectedPet.pet.healthStatus : '',
+      behavior: selectedPet ? selectedPet.pet.behavior : '',
+      description: selectedPet ? selectedPet.pet.description : '',
+      documents: [],
+    });
+
+    const handleInputChange = (field) => (event) => {
+      setUpdatedPetInfo({ ...updatedPetInfo, [field]: event.target.value });
+    };
+
+    const handleFileChange = (field) => (event) => {
+      const files = event.target.files;
+  
+      // Check if files are present
+      if (files.length > 0) {
+        setUpdatedPetInfo({ ...updatedPetInfo, documents: [...updatedPetInfo.documents, ...files] });
+      }
+    };
+    const handleUpdateSubmit = async () => {
+      try {
+        // Construct the updated pet information object
+        const updatedPetInfoObject = {
+          petId: selectedPet.pet.petId,
+          shelterId: user.shelterId,
+          name: updatedPetInfo.name,
+          birthDate: updatedPetInfo.age,
+          species: updatedPetInfo.species,
+          breed: updatedPetInfo.breed,
+          gender: updatedPetInfo.gender,
+          healthStatus: updatedPetInfo.healthStatus,
+          behavior: updatedPetInfo.behavior,
+          description: updatedPetInfo.description,
+        };
+
+        const updatedPetInfoJSON = JSON.stringify(updatedPetInfoObject);
+
+        // Send a request to update the pet information
+        const response = await fetch(`${BaseUri}/pet/update`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: updatedPetInfoJSON,
+        });
+
+        if (!response.ok) {
+          console.error('Failed to update pet:', response.statusText);
+          return;
+        }
+
+        // ... (similar to your Add Pet logic, handle document updates)
+
+        setUpdateModalOpen(false);
+        getFeaturedPests();
+      } catch (error) {
+        console.error('Error updating pet:', error.message);
+      }
+    };
+
+    return (
+      <Dialog open={isUpdateModalOpen} onClose={() => setUpdateModalOpen(false)}>
+        <DialogTitle>Update Pet Information</DialogTitle>
+        <DialogContent>
+        <TextField
+            label="Name"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={updatedPetInfo.name}
+            onChange={handleInputChange('name')}
+          />
+          <TextField
+            label="Species"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={updatedPetInfo.species}
+            onChange={handleInputChange('species')}
+          />
+          <TextField
+            label="Breed"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={ updatedPetInfo.breed}
+            onChange={handleInputChange('breed')}
+          />
+          <TextField
+            label="Birth Date"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            type="date"  
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={updatedPetInfo.age}
+            onChange={handleInputChange('age')}
+          />
+          <TextField
+            select
+            label="Gender"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={updatedPetInfo.gender}
+            onChange={handleInputChange('gender')}
+          >
+            <MenuItem value={true}>Girl</MenuItem>
+            <MenuItem value={false}>Boy</MenuItem>
+          </TextField>
+          <TextField
+            label="Health Status"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={updatedPetInfo.healthStatus}
+            onChange={handleInputChange('healthStatus')}
+          />
+          <TextField
+            label="Behavior"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={updatedPetInfo.behavior}
+            onChange={handleInputChange('behavior')}
+          />
+          <TextField
+            label="Description"
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+            margin="normal"
+            value={updatedPetInfo.description}
+            onChange={handleInputChange('description')}
+          />
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ marginRight: '8px' }}>Documents/Images:</label>
+            <input type="file" onChange={handleFileChange('documents')} multiple />
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setUpdateModalOpen(false)}>Cancel</Button>
+          <Button onClick={handleUpdateSubmit} variant="contained" color="primary">
+            Update Pet
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   return (
     <main>
@@ -350,21 +519,27 @@ export default function Home({user}) {
 
       <Grid container spacing={4}>
         {featuredPests.map((pet) => (
-          <FeaturedPet key={pet.pet.petId} pet={pet} />
+          <FeaturedPet
+            key={pet.pet.petId}
+            pet={pet}
+            onUpdateClick={() => handleUpdateClick(pet)}
+          />
         ))}
       </Grid>
 
+      <UpdatePetModal />
+
 
       {(user.role === 0 || user.role === 1) && (
-        <Button
-          onClick={() => setModalOpen(true)}
-          variant="contained"
-          color="primary"
-          sx={{ position: 'fixed', bottom: 16, right: 200 }}
-        >
-          Add Pet
-        </Button>
-      )}
+    <Button
+      onClick={() => setModalOpen(true)}
+      variant="contained"
+      color="primary"
+      sx={{ position: 'fixed', bottom: 16, right: 200 }}
+    >
+      Add Pet
+    </Button>
+  )}
 
 
       <AddPetModal />
