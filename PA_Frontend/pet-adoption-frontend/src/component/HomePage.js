@@ -19,6 +19,8 @@ import DialogActions from '@mui/material/DialogActions';
 import ApplicationList from './ApplicationList';
 import axios from 'axios';
 import SystemBackup from './SystemBackup';
+import AdoptionList from './AdoptionList';
+import AdopterAdoptionList from './AdopterAdoptionList';
 
 const HomePage = () => {
   const { adopterData } = useParams();
@@ -29,15 +31,19 @@ const HomePage = () => {
     { title: 'Home', component: <Home user={parsedAdopterData}/> },
     { title: 'Shelter Management', component: <ShelterManagement user={parsedAdopterData} /> }, 
     { title: 'System Backup', component: <SystemBackup user={parsedAdopterData} /> }, 
+    { title: 'Applications', component: <ApplicationList user={parsedAdopterData}/> },
+    { title: 'Adoptions', component: <AdoptionList user={parsedAdopterData}/> },
 
   ];
   const staff = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
     { title: 'Profile', component: <StaffProfile user={parsedAdopterData}/> },
     { title: 'Applications', component: <ApplicationList user={parsedAdopterData}/> },
+    { title: 'Adoptions', component: <AdoptionList user={parsedAdopterData}/> },
   ];
   const adaptor = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
+    { title: 'Adoptions', component: <AdopterAdoptionList user={parsedAdopterData}/> },
   ];
   
   const defaultTheme = createTheme();

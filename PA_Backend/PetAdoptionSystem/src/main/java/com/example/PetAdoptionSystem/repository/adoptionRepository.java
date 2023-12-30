@@ -38,4 +38,27 @@ public class adoptionRepository {
             throw new RuntimeException("Error retrieving Adoptions", e);
         }
     }
+
+    public List<Adoption> getAllByShelter(int shelterId) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Adoption WHERE shelterId=? ", new Object[]{shelterId}, (resultSet, rowNum) ->
+                    new Adoption(resultSet.getInt("petId"),
+                            resultSet.getInt("shelterId"),
+                            resultSet.getInt("adopterId"),
+                            resultSet.getDate("adoptionDate")));
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error retrieving Adoptions", e);
+        }
+    }
+    public List<Adoption> getAllByAdopter(int adopterId) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Adoption WHERE adopterId=? ", new Object[]{adopterId}, (resultSet, rowNum) ->
+                    new Adoption(resultSet.getInt("petId"),
+                            resultSet.getInt("shelterId"),
+                            resultSet.getInt("adopterId"),
+                            resultSet.getDate("adoptionDate")));
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Error retrieving Adoptions", e);
+        }
+    }
 }
