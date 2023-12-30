@@ -62,4 +62,22 @@ public class PetRepository {
         );
     }
 
+    public Pet getPetById(int petId) {
+        String sql = "SELECT * FROM pet WHERE petId = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{petId}, (resultSet, rowNum) ->
+                new Pet(
+                        resultSet.getInt("petId"),
+                        resultSet.getInt("shelterId"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("birthDate"),
+                        resultSet.getBoolean("gender"),
+                        resultSet.getString("species"),
+                        resultSet.getString("breed"),
+                        resultSet.getString("description"),
+                        resultSet.getString("behaviour"),
+                        resultSet.getString("healthStatus")
+                )
+        );
+    }
+
 }
