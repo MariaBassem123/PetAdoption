@@ -18,7 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import ApplicationList from './ApplicationList';
 import axios from 'axios';
-
+import SystemBackup from './SystemBackup';
 
 const HomePage = () => {
   const { adopterData } = useParams();
@@ -28,6 +28,8 @@ const HomePage = () => {
   const manager = [
     { title: 'Home', component: <Home user={parsedAdopterData}/> },
     { title: 'Shelter Management', component: <ShelterManagement user={parsedAdopterData} /> }, 
+    { title: 'System Backup', component: <SystemBackup user={parsedAdopterData} /> }, 
+
   ];
   const staff = [
     { title: 'Home', component: <Home user={parsedAdopterData} /> },
