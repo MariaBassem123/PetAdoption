@@ -27,15 +27,60 @@ export default function Home({user}) {
 
   const [featuredPests, setFeaturedPests] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [allPets, setAllPets] = useState([]);
+  const [filteredPets, setFilteredPets] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
+  
 
+  const handleSearchChange = (event) => {
+
+    console.log(allPets);
+    const searchQuery = event.target.value.toLowerCase();
+
+    const updatedFilteredPets = allPets.filter((pet) => {
+      if (selectedFilter === 'breed') {
+        // Filter pets based on breed containing the search query
+        console.log(pet.pet.breed.toLowerCase().includes(searchQuery))
+        return pet.pet.breed.toLowerCase().includes(searchQuery);
+      } else if(selectedFilter === 'species'){
+        console.log(pet.pet.species.toLowerCase().includes(searchQuery))
+        return pet.pet.species.toLowerCase().includes(searchQuery);
+      } else if(selectedFilter === 'name'){
+        console.log(pet.pet.name.toLowerCase().includes(searchQuery))
+        return pet.pet.name.toLowerCase().includes(searchQuery);
+      } 
+      
+      // else {
+      //   // Add your logic for other filters here
+      //   // For example, filtering based on pet name
+      //   return pet.pet.name.toLowerCase().includes(searchQuery);
+      // }
+    });
+  
+    // Update the filtered pets state
+    
+    setFilteredPets(updatedFilteredPets);
+  };
+
+    useEffect(() => {
+        getFeaturedPests();
+      }, []);
+
+
+  const handleFilterChange = (event) => {
+    setSelectedFilter(event.target.value);
+    console.log(event.target.value)
+  };
   const getFeaturedPests = async () => {
     try {
       const response = await fetch(`${BaseUri}/pet/getAll`);
       if (response.ok) {
         const data = await response.json();
-        setFeaturedPests(data);
+        setAllPets(data); // Update the allPets state with the fetched data
         console.log(data);
+        setFilteredPets(data);
       } else {
         console.error('Failed to fetch pets:', response.statusText);
       }
@@ -514,18 +559,43 @@ export default function Home({user}) {
           label="Search"
           variant="outlined"
           sx={{ width: '100%', maxWidth: '450px', marginRight: 90 }}
+          onChange={handleSearchChange}
+
         />
+        
       </Box>
+      <TextField
+        select
+        label="Filter by"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        value={selectedFilter}
+        onChange={handleFilterChange}
+        sx={{
+          width: '40%', // Adjust the width as needed
+          left: '690px', // Add some margin between the dropdown and the input field
+          top: '-103px'
+        }}
+      >
+        <MenuItem value="species">Species</MenuItem>
+        <MenuItem value="breed">Breed</MenuItem>
+        <MenuItem value="name">Name</MenuItem>
+      </TextField>
+
 
       <Grid container spacing={4}>
-        {featuredPests.map((pet) => (
+        {filteredPets.map((pet) => (
+          <FeaturedPet key={pet.pet.petId} pet={pet} />
+        ))}
+      </Grid>
+        {/* {featuredPests.map((pet) => (
           <FeaturedPet
             key={pet.pet.petId}
             pet={pet}
             onUpdateClick={() => handleUpdateClick(pet)}
           />
-        ))}
-      </Grid>
+        ))} */}
 
       <UpdatePetModal />
 
