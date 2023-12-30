@@ -114,7 +114,6 @@ public class BackupController {
             String folderPath = jarDir + File.separator + "backup";
             File backupFolder = new File(folderPath);
 
-            // Check if the backup folder exists and get its last modified timestamp
             if (backupFolder.exists() && backupFolder.isDirectory()) {
                 long lastBackupTime = backupFolder.lastModified();
 
