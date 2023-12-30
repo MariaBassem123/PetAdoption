@@ -50,7 +50,6 @@ public class ApplicationController {
     public ResponseEntity<String> acceptApplication(@RequestParam int shelterID,@RequestParam int adopterID,
                                                     @RequestParam int petID) {
         try {
-            System.out.println("herererere");
             applicationService.acceptApplication(shelterID,adopterID,petID);
             return ResponseEntity.status(HttpStatus.CREATED).body("success");
         }catch (DataIntegrityViolationException d) {
