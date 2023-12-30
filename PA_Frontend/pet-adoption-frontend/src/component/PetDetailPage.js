@@ -61,16 +61,56 @@ const DescriptionTypography = styled(Typography)({
 
 function PetDetailPage() {
   const location = useLocation();
-  const pet = location.state?.pet;
+  const { user, pet } = location.state;
 
-  console.log(pet)
+  console.log('User:', user.adopterId);
+  console.log('Pet:', pet.pet.petId);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const navigate = useNavigate();
-  const handleButtonClick = (id) => {
-    // Handle the click event and navigate to the PetDetailPage with the postId
-    navigate(`/form/${id}`);
-  };
+
+  const handleButtonClick = async () => {
+    try {
+
+        const petId = pet.pet.petId;
+        console.log(`petId: ${petId}`);
+
+        console.log("shelterId:", pet.pet.shelterId);
+
+        console.log('User:', user.adopterId);
+
+        const applicationData = {
+          petId: pet.pet.petId,
+          shelterId: pet.pet.shelterId, // Assuming shelterId is directly accessible in shelterId.data
+          adopterId: user.adopterId,
+          status: 0
+        };
+
+        const response = await fetch('http://localhost:8088/applications/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // If your backend expects credentials, include this line:
+          // 'Authorization': 'Bearer ' + yourToken,
+        },
+        body: JSON.stringify(applicationData),
+      });
+      if (response.ok) {
+        console.log('Application submitted successfully');
+        alert('Application submitted successfully');
+        // Handle success, e.g., show a success message or navigate to a different page
+      } else {
+        console.error('Failed to submit application:', response.statusText);
+        alert('You submit this application before!');
+        // Handle error, e.g., show an error message to the user
+      }
+    } catch (error) {
+      console.error("Error fetching shelterId or submitting application:", error);
+    }
+
+
+
+};
 
   const handleImageClick = () => {
     // Handle image click to navigate to the next image
@@ -115,7 +155,7 @@ function PetDetailPage() {
             />
           )}
         </ContentContainer>
-        <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick(pet.pet.petId)}>
+        <AdoptButton variant="contained" color="primary" onClick={() => handleButtonClick()}>
           Adopt the Pet
         </AdoptButton>
       </RootContainer>
