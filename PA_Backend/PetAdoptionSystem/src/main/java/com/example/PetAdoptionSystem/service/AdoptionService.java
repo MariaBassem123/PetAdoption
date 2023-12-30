@@ -61,7 +61,7 @@ public class AdoptionService {
     public AdopterAdoptionDto convertToAdopterDTO(Adoption adoption) {
         Pet pet=petRepository.getPetById(adoption.getPetId());
         Shelter shelter=jdbcShelterRepository.getShelterById(adoption.getShelterId());
-        return new AdopterAdoptionDto(pet,shelter);
+        return new AdopterAdoptionDto(pet,shelter,adoption.getAdoptionDate());
     }
 
 }

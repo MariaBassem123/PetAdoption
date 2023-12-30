@@ -36,7 +36,6 @@ const AdoptionList = ({ user }) => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
         {adoption.map((application) => (
           <Paper
-            key={application.id}
             elevation={3}
             style={{ marginBottom: '16px', padding: '16px', width: 'calc(33.33% - 16px)' }}
           >
@@ -45,9 +44,14 @@ const AdoptionList = ({ user }) => {
                 <div>
                   <ListItemText
                     style={{ marginRight: '20px' }}
-                    primary={application.pet.name}
+                    primary={
+                        <Typography variant="subtitle1" color="primary">
+                        Pet Details
+                        </Typography>
+                    }
                     secondary={
                       <React.Fragment>
+                        <Typography variant="body1">{application.pet.name}</Typography>
                         <Typography variant="body1">{application.pet.species}</Typography>
                         <Typography variant="body1">{application.pet.breed}</Typography>
                         <Typography variant="body1">{application.pet.birthDate}</Typography>
@@ -68,6 +72,14 @@ const AdoptionList = ({ user }) => {
                         <Typography variant="body2">Email: {application.adopter_Email}</Typography>
                         <Typography variant="body2">Phone: {application.adopter_Phone}</Typography>
                       </React.Fragment>
+                    }
+                  />
+                  <ListItemText
+                    style={{ marginRight: '20px' }}
+                    primary={
+                      <Typography variant="subtitle1" color="primary">
+                        Date: {application.date}
+                      </Typography>
                     }
                   />
                 </div>
