@@ -28,6 +28,16 @@ public class PetController {
         }
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<String> updatePet(@RequestBody Pet pet) {
+        try {
+           petService.updatePet(pet);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving pet");
+        }
+    }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<PetDto>> getAllPets() {
         try {

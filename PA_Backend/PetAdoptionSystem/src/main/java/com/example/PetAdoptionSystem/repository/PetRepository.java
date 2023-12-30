@@ -44,6 +44,27 @@ public class PetRepository {
         return keyHolder.getKey().longValue();
     }
 
+
+    public void updatePet(Pet pet) {
+        String sql = "UPDATE pet " +
+                "SET name = ?, birthDate = ?, gender = ?, species = ?, breed = ?, " +
+                "description = ?, behaviour = ?, healthStatus = ? " +
+                "WHERE petId = ?";
+
+        jdbcTemplate.update(sql,
+                pet.getName(),
+                pet.getBirthDate(),
+                pet.getGender(),
+                pet.getSpecies(),
+                pet.getBreed(),
+                pet.getDescription(),
+                pet.getBehaviour(),
+                pet.getHealthStatus(),
+                pet.getPetId()
+        );
+    }
+
+
     public List<Pet> getAllPets() {
         String sql = "SELECT * FROM pet";
         return jdbcTemplate.query(sql, (resultSet, rowNum) ->

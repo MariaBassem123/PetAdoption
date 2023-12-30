@@ -51,16 +51,9 @@ export default function Home({user}) {
         console.log(pet.pet.name.toLowerCase().includes(searchQuery))
         return pet.pet.name.toLowerCase().includes(searchQuery);
       } 
-      
-      // else {
-      //   // Add your logic for other filters here
-      //   // For example, filtering based on pet name
-      //   return pet.pet.name.toLowerCase().includes(searchQuery);
-      // }
+
     });
-  
-    // Update the filtered pets state
-    
+      
     setFilteredPets(updatedFilteredPets);
   };
 
@@ -399,10 +392,11 @@ export default function Home({user}) {
       age: selectedPet ? selectedPet.pet.birthDate : '',
       gender: selectedPet ? selectedPet.pet.gender : '',
       healthStatus: selectedPet ? selectedPet.pet.healthStatus : '',
-      behavior: selectedPet ? selectedPet.pet.behavior : '',
+      behaviour: selectedPet ? selectedPet.pet.behaviour : '',
       description: selectedPet ? selectedPet.pet.description : '',
       documents: [],
     });
+    console.log(updatedPetInfo)
 
     const handleInputChange = (field) => (event) => {
       setUpdatedPetInfo({ ...updatedPetInfo, [field]: event.target.value });
@@ -428,7 +422,7 @@ export default function Home({user}) {
           breed: updatedPetInfo.breed,
           gender: updatedPetInfo.gender,
           healthStatus: updatedPetInfo.healthStatus,
-          behavior: updatedPetInfo.behavior,
+          behaviour: updatedPetInfo.behaviour,
           description: updatedPetInfo.description,
         };
 
@@ -448,7 +442,36 @@ export default function Home({user}) {
           return;
         }
 
-        // ... (similar to your Add Pet logic, handle document updates)
+        // Step 2: Upload documents
+        if (Array.isArray(updatedPetInfo.documents)) {
+          const documentUploadPromises = updatedPetInfo.documents.map(async (document) => {
+            try {
+              console.log(document);
+              const formData = new FormData();
+              formData.append('attachment', document)
+              formData.append('petId', selectedPet.pet.petId);
+              formData.append('type', document.type);
+              formData.append('shelterId', user.shelterId);
+
+              console.log(formData);
+
+              const documentUploadResponse = await fetch(`${BaseUri}/document/save`, {
+                method: 'POST',
+                body: formData,
+              });
+
+              if (documentUploadResponse.ok) {
+                console.log('Document uploaded successfully!');
+              } else {
+                console.error('Failed to upload document:', documentUploadResponse.statusText);
+              }
+            } catch (documentError) {
+              console.error('Error uploading document:', documentError.message);
+            }
+          });
+
+          await Promise.all(documentUploadPromises);
+        }
 
         setUpdateModalOpen(false);
         getFeaturedPests();
@@ -522,7 +545,7 @@ export default function Home({user}) {
             variant="outlined"
             fullWidth
             margin="normal"
-            value={updatedPetInfo.behavior}
+            value={updatedPetInfo.behaviour}
             onChange={handleInputChange('behavior')}
           />
           <TextField

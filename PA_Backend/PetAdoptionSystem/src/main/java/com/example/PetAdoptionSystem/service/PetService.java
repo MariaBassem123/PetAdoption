@@ -26,6 +26,10 @@ public class PetService {
         return petRepository.savePet(pet);
     }
 
+    public void updatePet(Pet pet) {
+        petRepository.updatePet(pet);
+    }
+
     public List<Pet> getAllPets() {
         return petRepository.getAllPets();
     }
